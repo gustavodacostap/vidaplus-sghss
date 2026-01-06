@@ -3,7 +3,10 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
-    "analytics": "b502446c-ae16-43c0-ad57-2c2c4785ecbf"
+    "analytics": "b502446c-ae16-43c0-ad57-2c2c4785ecbf",
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -29,7 +32,10 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/tailwind.css", "src/styles.scss"]
+            "styles": [
+              "src/tailwind.css",
+              "src/styles.scss"
+            ]
           },
           "configurations": {
             "production": {
@@ -69,6 +75,15 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }

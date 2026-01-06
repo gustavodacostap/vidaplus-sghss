@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/guards/auth.guard';
-import { RoleGuard } from './core/auth/guards/role.guard';
+// import { RoleGuard } from './core/auth/guards/role.guard';
 import { RoleRedirectGuard } from './core/auth/guards/role-redirect.guard';
 
 export const routes: Routes = [
@@ -9,17 +9,18 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
   },
 
-  // {
-  // path: '',
-  // canActivate: [AuthGuard],
-  // canActivateChild: [AuthGuard],
-  // // loadComponent: () => import('./layout/app-layout.component').then((m) => m.AppLayoutComponent),
-  // children: [
-  //   {
-  //     path: '',
-  //     canActivate: [RoleRedirectGuard],
-  //   },
-
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    loadComponent: () => import('./shared/components/layout/layout').then((m) => m.Layout),
+    children: [
+      {
+        path: '',
+        canActivate: [RoleRedirectGuard],
+      },
+    ],
+  },
   // {
   //   path: 'admin',
   //   canActivate: [RoleGuard],

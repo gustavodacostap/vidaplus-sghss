@@ -1,0 +1,15 @@
+import { ActionReducerMap } from '@ngrx/store';
+import { AuthEffects } from '../../features/auth/login/store/auth.effects';
+import { authReducer } from '../../features/auth/login/store/auth.reducer';
+import { AuthState } from '../../features/auth/login/store/auth.state';
+
+export interface AppState {
+  auth: AuthState;
+}
+
+export const reducers: ActionReducerMap<AppState> = {
+  auth: authReducer,
+  // userInterface: userInterfaceReducer,
+};
+
+export const effects = [AuthEffects];

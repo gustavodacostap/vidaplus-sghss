@@ -3,13 +3,18 @@ import { StorageService } from '../../storage/storage.service';
 import { Observable, of } from 'rxjs';
 import { User } from '../models/user.model';
 import * as CryptoJS from 'crypto-js';
+import { SessionService } from './session.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private storage = inject(StorageService);
+  private sessionService = inject(SessionService);
 
   private readonly USERS_KEY = 'users';
-  private readonly SESSION_KEY = 'session';
+
+  constructor() {
+    this.seedUserIfNeeded();
+  }
 
   login(email: string, password: string): Observable<User> {
     const users = this.storage.get<User[]>(this.USERS_KEY) || [];
@@ -21,7 +26,7 @@ export class AuthService {
       throw new Error('Credenciais inválidas');
     }
 
-    this.storage.set(this.SESSION_KEY, {
+    this.sessionService.setSession({
       userId: user.id,
       role: user.role,
       token: this.generateToken(user),
@@ -30,12 +35,8 @@ export class AuthService {
     return of(user);
   }
 
-  logout() {
-    localStorage.removeItem(this.SESSION_KEY);
-  }
-
-  getSession() {
-    return this.storage.get<any>(this.SESSION_KEY);
+  logout(): void {
+    this.sessionService.clearSession();
   }
 
   hashPassword(password: string): string {
@@ -48,7 +49,23 @@ export class AuthService {
         sub: user.id,
         role: user.role,
         iat: Date.now(),
-      })
+      }),
     );
+  }
+
+  private seedUserIfNeeded() {
+    const users = this.storage.get<User[]>(this.USERS_KEY) ?? [];
+
+    if (users.some((u) => u.email === 'user@teste.com')) return;
+
+    const defaultUser: User = {
+      id: '1',
+      name: 'User Teste',
+      email: 'user@teste.com',
+      role: 'ADMIN',
+      passwordHash: this.hashPassword('12345678'),
+    };
+
+    this.storage.set(this.USERS_KEY, [...users, defaultUser]);
   }
 }

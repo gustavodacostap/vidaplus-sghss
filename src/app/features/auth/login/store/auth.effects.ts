@@ -12,28 +12,29 @@ export class AuthEffects {
   private router = inject(Router);
   private actions$ = inject(Actions);
 
-  login$ = createEffect(() =>
-    this.actions$.pipe(
+  login$ = createEffect(() => {
+    return this.actions$.pipe(
       ofType(authActions.login),
       switchMap(({ email, password }) =>
         this.authService.login(email, password).pipe(
           map((user) => authActions.loginSuccess({ user })),
-          catchError((err) => of(authActions.loginFailure({ error: err.message })))
-        )
-      )
-    )
-  );
+          catchError((err) => of(authActions.loginFailure({ error: err.message }))),
+        ),
+      ),
+    );
+  });
 
   redirectAfterLogin$ = createEffect(
-    () =>
-      this.actions$.pipe(
+    () => {
+      return this.actions$.pipe(
         ofType(authActions.loginSuccess),
         tap(({ user }) => {
           if (user.role === 'ADMIN') this.router.navigate(['/admin']);
           if (user.role === 'PROFESSIONAL') this.router.navigate(['/dashboard']);
           if (user.role === 'PATIENT') this.router.navigate(['/dashboard']);
-        })
-      ),
-    { dispatch: false }
+        }),
+      );
+    },
+    { dispatch: false },
   );
 }
