@@ -1,0 +1,16 @@
+<mat-sidenav-container class="h-full w-full">
+  <mat-sidenav mode="over" class="w-64">
+    <mat-nav-list>
+      @for (item of navItems(); track item.route) {
+        <a
+          mat-list-item
+          [href]="item.route"
+          class="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-100"
+        >
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+</mat-sidenav-container>

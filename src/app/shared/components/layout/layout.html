@@ -1,1 +1,15 @@
-<mat-toolbar></mat-toolbar>
+<div class="flex h-screen w-screen overflow-hidden">
+  <!-- SIDENAV -->
+  <app-sidenav [opened]="sidenavOpened()" (close)="closeSidenav()" />
+
+  <!-- CONTEÚDO -->
+  <div class="flex flex-col flex-1">
+    <!-- TOPBAR -->
+    <app-topbar (menuClick)="toggleSidenav()" />
+
+    <!-- PAGE CONTENT -->
+    <main class="flex-1 overflow-auto bg-gray-50 p-4">
+      <router-outlet />
+    </main>
+  </div>
+</div>
