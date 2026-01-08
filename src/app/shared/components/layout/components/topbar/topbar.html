@@ -1,1 +1,6 @@
-<p>topbar works!</p>
+<mat-toolbar>
+  <button matIconButton aria-label="Ícone de menu" (click)="menuToggle.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="flex-1" aria-hidden="true"></span>
+</mat-toolbar>

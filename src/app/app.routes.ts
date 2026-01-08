@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/guards/auth.guard';
 // import { RoleGuard } from './core/auth/guards/role.guard';
 import { RoleRedirectGuard } from './core/auth/guards/role-redirect.guard';
+import { RoleGuard } from './core/auth/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -18,15 +19,24 @@ export const routes: Routes = [
       {
         path: '',
         canActivate: [RoleRedirectGuard],
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
+        path: 'admin',
+        canActivate: [RoleGuard],
+        canActivateChild: [RoleGuard],
+        children: [
+          {
+            path: 'pacientes',
+            loadComponent: () =>
+              import('./features/admin/pacientes/pages/pacientes').then((m) => m.Pacientes),
+          },
+        ],
+        data: { roles: ['ADMIN'] },
       },
     ],
   },
-  // {
-  //   path: 'admin',
-  //   canActivate: [RoleGuard],
-  //   data: { roles: ['ADMIN'] },
-  //   loadChildren: () => import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
-  // },
 
   // {
   //   path: 'professional',

@@ -1,15 +1,27 @@
-<div class="flex h-screen w-screen overflow-hidden">
+<div class="flex flex-col h-screen w-screen overflow-hidden">
+  <!-- TOPBAR -->
+  <app-topbar (menuToggle)="sidenav.toggle()" />
+
   <!-- SIDENAV -->
-  <app-sidenav [opened]="sidenavOpened()" (close)="closeSidenav()" />
-
-  <!-- CONTEÚDO -->
-  <div class="flex flex-col flex-1">
-    <!-- TOPBAR -->
-    <app-topbar (menuClick)="toggleSidenav()" />
-
-    <!-- PAGE CONTENT -->
-    <main class="flex-1 overflow-auto bg-gray-50 p-4">
-      <router-outlet />
-    </main>
-  </div>
+  <mat-sidenav-container class="h-full w-full">
+    <mat-sidenav #sidenav mode="over" class="w-64">
+      <mat-nav-list>
+        @for (item of navItems(); track item.route) {
+          <a
+            mat-list-item
+            [href]="item.route"
+            class="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-100"
+          >
+            <mat-icon>{{ item.icon }}</mat-icon>
+            <span>{{ item.label }}</span>
+          </a>
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <main class="flex-1 overflow-auto bg-gray-50 p-4">
+        <router-outlet />
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

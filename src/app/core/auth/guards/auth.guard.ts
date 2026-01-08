@@ -1,16 +1,24 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { SessionService } from '../services/session.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  private authService = inject(AuthService);
+  private sessionService = inject(SessionService);
   private router = inject(Router);
 
   canActivate(): boolean {
-    const session = this.authService.getSession();
+    return this.checkSession();
+  }
+
+  canActivateChild(): boolean {
+    return this.checkSession();
+  }
+
+  private checkSession(): boolean {
+    const session = this.sessionService.getSession();
     if (!session) {
       this.router.navigate(['/login']);
       return false;
