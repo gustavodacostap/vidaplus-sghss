@@ -24,10 +24,10 @@ export const uiReducer = createReducer(
   }),
 
   on(
-    UIActions.markNotificationAsRead,
-    (state, { id }): UIState => ({
+    UIActions.markAllNotificationsAsRead,
+    (state): UIState => ({
       ...state,
-      notifications: state.notifications.map((n) => (n.id === id ? { ...n, read: true } : n)),
+      notifications: state.notifications.map((n) => (n.read ? n : { ...n, read: true })),
     }),
   ),
 

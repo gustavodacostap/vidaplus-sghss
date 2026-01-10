@@ -11,9 +11,6 @@ export const addNotification = createAction(
   props<{ notification: UINotification }>(),
 );
 
-export const markNotificationAsRead = createAction(
-  '[UI] Mark Notification As Read',
-  props<{ id: string }>(),
-);
+export const markAllNotificationsAsRead = createAction('[UI] Mark All Notifications As Read');
 
 export const clearNotifications = createAction('[UI] Clear Notifications');

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -11,9 +11,11 @@ import {
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { formatNotificationTime } from '../../../../utils/date.utils';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { take } from 'rxjs';
-import { setNotifications } from '../../../../../core/ui/store/ui.actions';
+import {
+  clearNotifications,
+  markAllNotificationsAsRead,
+  setNotifications,
+} from '../../../../../core/ui/store/ui.actions';
 
 @Component({
   selector: 'app-notification-menu',
@@ -32,16 +34,38 @@ export class NotificationMenu {
   store = inject(Store);
 
   formatNotificationTime = formatNotificationTime;
-  isOpen = false;
-  readonly notifications = toSignal(this.store.select(selectNotifications).pipe(take(1)));
+  isOpen = signal(false);
+  private openedOnce = false;
+  readonly notifications = this.store.selectSignal(selectNotifications);
   readonly unreadCount = this.store.selectSignal(selectUnreadNotificationsCount);
 
   close() {
-    this.isOpen = false;
+    this.isOpen.set(false);
+  }
+
+  clearNotifications() {
+    this.store.dispatch(clearNotifications());
   }
 
   constructor() {
     const now = new Date();
+
+    effect(() => {
+      const open = this.isOpen();
+
+      // usuário abriu o menu em algum momento
+      if (open) {
+        this.openedOnce = true;
+      }
+
+      // ciclo completo: abriu → fechou
+      if (!open && this.openedOnce && this.unreadCount() > 0) {
+        this.store.dispatch(markAllNotificationsAsRead());
+
+        // 🔁 reset explícito
+        this.openedOnce = false;
+      }
+    });
 
     this.store.dispatch(
       setNotifications({
