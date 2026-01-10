@@ -1,6 +1,18 @@
-<mat-toolbar>
-  <button matIconButton aria-label="Ícone de menu" (click)="menuToggle.emit()">
-    <mat-icon>menu</mat-icon>
-  </button>
+<mat-toolbar class="toolbar">
+  <div class="flex gap-4">
+    <button
+      matIconButton
+      aria-label="Ícone de menu"
+      (click)="menuToggle.emit()"
+      class="flex items-center cursor-pointer"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <app-logo></app-logo>
+  </div>
   <span class="flex-1" aria-hidden="true"></span>
+  <div class="flex gap-5 items-center">
+    <app-notification-menu></app-notification-menu>
+    <app-profile-menu></app-profile-menu>
+  </div>
 </mat-toolbar>

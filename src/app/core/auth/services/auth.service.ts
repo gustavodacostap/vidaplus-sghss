@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { StorageService } from '../../storage/storage.service';
+import { StorageService } from '../../storage/services/storage.service';
 import { Observable, of } from 'rxjs';
-import { User } from '../models/user.model';
+import { User } from '../models/User.model';
 import * as CryptoJS from 'crypto-js';
 import { SessionService } from './session.service';
 

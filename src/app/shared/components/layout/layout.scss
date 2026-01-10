@@ -1,0 +1,39 @@
+@use '@angular/material' as mat;
+
+.sidenav {
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: var(--mat-sys-surface-container),
+      container-shape: 0px,
+    )
+  );
+}
+.nav-list {
+  @include mat.list-overrides(
+    (
+      active-indicator-color: var(--mat-sys-primary-fixed-dim),
+      active-indicator-shape: 0px,
+      list-item-label-text-color: var(--mat-sys-on-surface-variant),
+      list-item-hover-label-text-color: var(--mat-sys-on-surface-variant),
+    )
+  );
+}
+
+::ng-deep
+  .mat-mdc-list-item.mdc-list-item--activated
+  .mdc-list-item__content
+  .mdc-list-item__primary-text {
+  color: var(--mat-sys-on-primary-container);
+}
+
+::ng-deep .mat-mdc-list-item.mdc-list-item--activated .mat-mdc-list-item-icon {
+  color: var(--mat-sys-on-primary-container);
+}
+
+::ng-deep .mat-mdc-list-item.mdc-list-item--activated .mat-mdc-list-item-icon {
+  color: var(--mat-sys-on-primary-container);
+}
+
+::ng-deep .mdc-list-item--with-leading-icon.mdc-list-item--activated:hover .mdc-list-item__start {
+  color: var(--mat-sys-on-primary-container);
+}

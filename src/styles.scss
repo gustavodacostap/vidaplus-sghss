@@ -42,4 +42,10 @@ body {
   @include my-theme.high-contrast-overrides(light);
 }
 
-/* You can add global styles to this file, and also import other style files */
+.mat-sidenav-list {
+  @include mat.list-overrides(
+    (
+      list-item-hover-state-layer-color: var(--mat-sys-tertiary),
+    )
+  );
+}

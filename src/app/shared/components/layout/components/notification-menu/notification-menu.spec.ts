@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Sidenav } from './sidenav';
+import { NotificationMenu } from './notification-menu';
 
-describe('Sidenav', () => {
-  let component: Sidenav;
-  let fixture: ComponentFixture<Sidenav>;
+describe('NotificationMenu', () => {
+  let component: NotificationMenu;
+  let fixture: ComponentFixture<NotificationMenu>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Sidenav]
+      imports: [NotificationMenu]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Sidenav);
+    fixture = TestBed.createComponent(NotificationMenu);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

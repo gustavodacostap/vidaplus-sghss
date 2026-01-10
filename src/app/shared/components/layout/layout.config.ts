@@ -1,4 +1,4 @@
-import { UserRole } from '../../../core/auth/models/user.model';
+import { UserRole } from '../../../core/auth/models/User.model';
 
 export interface NavItem {
   label: string;

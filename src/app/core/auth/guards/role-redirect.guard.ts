@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { UserRole } from '../models/user.model';
+import { UserRole } from '../models/User.model';
 import { SessionService } from '../services/session.service';
 
 const ROLE_REDIRECT_MAP: Record<UserRole, string> = {

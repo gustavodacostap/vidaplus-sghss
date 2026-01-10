@@ -1,0 +1,67 @@
+<!-- BOTÃO / ORIGEM DO OVERLAY -->
+<button
+  type="button"
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+  aria-haspopup="menu"
+  aria-label="Abrir notificações"
+  [attr.aria-expanded]="isOpen"
+  [matBadge]="unreadCount()"
+  [matBadgeHidden]="unreadCount() === 0"
+  (click)="isOpen = !isOpen"
+  class="relative flex items-center justify-center cursor-pointer"
+>
+  <mat-icon>notifications</mat-icon>
+</button>
+
+<!-- OVERLAY -->
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayOffsetY]="8"
+  (keydown.escape)="close()"
+>
+  <!-- PAINEL -->
+  <nav
+    role="menu"
+    aria-label="Notificações"
+    class="flex max-h-[70vh] sm:w-80 flex-col rounded-xl bg-(--mat-sys-surface-container-low) shadow-xl animate-[fadeIn_150ms_ease-out]"
+  >
+    <!-- HEADER -->
+    <header class="flex justify-between items-center px-4 py-3">
+      <h2 class="font-semibold">Notificações</h2>
+      <button matButton>Limpar</button>
+    </header>
+
+    <mat-divider></mat-divider>
+
+    <!-- LISTA -->
+    <ul class="flex-1 overflow-auto" role="menu">
+      @for (item of notifications(); track item.id) {
+        <li role="menuitem">
+          <div class="flex flex-col px-4 py-3 gap-2.5">
+            <div class="flex justify-between items-center">
+              <div class="flex gap-2.5">
+                <span class="font-medium"> {{ item.title }} </span>
+                <span class="text-(--mat-sys-outline)">
+                  {{ formatNotificationTime(item.timestamp) }}
+                </span>
+              </div>
+              @if (!item.read) {
+                <span
+                  class="inline-flex h-2 w-2 rounded-full bg-(--mat-sys-primary)"
+                  role="status"
+                  aria-label="Notificação não lida"
+                ></span>
+              }
+            </div>
+            <p>{{ item.description }}</p>
+          </div>
+        </li>
+        <mat-divider></mat-divider>
+      }
+    </ul>
+  </nav>
+</ng-template>

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { StorageService } from '../../storage/storage.service';
-import { Session } from '../models/session.model';
+import { StorageService } from '../../storage/services/storage.service';
+import { Session } from '../models/Session.model';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {
