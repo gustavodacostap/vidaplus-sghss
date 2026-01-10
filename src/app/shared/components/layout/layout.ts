@@ -1,6 +1,6 @@
-import { Component, computed, inject, ViewChild } from '@angular/core';
+import { Component, computed, inject, ViewChild, OnInit } from '@angular/core';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Topbar } from './components/topbar/topbar';
 import { SessionService } from '../../../core/auth/services/session.service';
 import { MatListModule } from '@angular/material/list';
@@ -23,9 +23,24 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './layout.html',
   styleUrl: './layout.scss',
 })
-export class Layout {
+export class Layout implements OnInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   private session = inject(SessionService);
+  private router = inject(Router);
+
+  ngOnInit() {
+    const session = this.session.getSession();
+    if (session) {
+      const redirectMap = {
+        ADMIN: '/admin/pacientes',
+        PROFESSIONAL: '/professional/agenda',
+        PATIENT: '/patient/consultas',
+      };
+      this.router.navigateByUrl(redirectMap[session.role]);
+    } else {
+      this.router.navigateByUrl('/login');
+    }
+  }
 
   toggleSidenav() {
     this.sidenav.toggle();
