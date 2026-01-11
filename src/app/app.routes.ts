@@ -5,7 +5,7 @@ import { route } from './shared/helpers/route.helper';
 
 export const routes: Routes = [
   route({
-    path: 'login',
+    path: 'auth/login',
     loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
   }),
 

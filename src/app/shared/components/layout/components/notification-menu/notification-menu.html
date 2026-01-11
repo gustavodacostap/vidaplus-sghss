@@ -5,11 +5,11 @@
   #trigger="cdkOverlayOrigin"
   aria-haspopup="dialog"
   [attr.aria-label]="
-    unreadCount() > 0 ? 'Abrir notificações. ' + unreadCount() + ' não lidas' : 'Abrir notificações'
+    unreadCount() > 0 ? 'Menu notificações. ' + unreadCount() + ' não lidas' : 'Menu notificações'
   "
   [attr.aria-expanded]="isOpen()"
   (click)="isOpen.set(!isOpen())"
-  class="relative flex items-center justify-center cursor-pointer"
+  class="flex items-center justify-center cursor-pointer"
 >
   <mat-icon aria-hidden="true" [matBadge]="unreadCount()" [matBadgeHidden]="unreadCount() === 0"
     >notifications</mat-icon
@@ -23,6 +23,7 @@
   [cdkConnectedOverlayOpen]="isOpen()"
   cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
   [cdkConnectedOverlayOffsetY]="4"
+  [cdkConnectedOverlayOffsetX]="20"
   (keydown.escape)="close()"
 >
   <!-- PAINEL -->

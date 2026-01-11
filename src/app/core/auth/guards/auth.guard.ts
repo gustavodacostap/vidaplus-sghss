@@ -18,10 +18,9 @@ export class AuthGuard implements CanActivate {
   }
 
   private checkSession(): boolean {
-    console.log('Checando sessão no AuthGuard');
     const session = this.sessionService.getSession();
     if (!session) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
       return false;
     }
     return true;

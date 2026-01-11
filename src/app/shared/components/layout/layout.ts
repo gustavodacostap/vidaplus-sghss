@@ -1,4 +1,4 @@
-import { Component, computed, inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, computed, inject, ViewChild, OnInit, OnDestroy, signal } from '@angular/core';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import {
   ActivatedRoute,
@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { TopbarService } from '../../../core/ui/services/topbar.service';
+import { Session } from '../../../core/auth/models/Session.model';
 
 @Component({
   selector: 'app-layout',
@@ -41,18 +42,22 @@ export class Layout implements OnInit, OnDestroy {
 
   private destroyed = new Subject<void>();
 
+  sessionData = signal<Session | null>(this.session.getSession());
+
   ngOnInit() {
-    const session = this.session.getSession();
-    if (session) {
-      const redirectMap = {
-        ADMIN: '/admin/pacientes',
-        PROFESSIONAL: '/professional/agenda',
-        PATIENT: '/patient/consultas',
-      };
-      this.router.navigateByUrl(redirectMap[session.role]);
-    } else {
-      this.router.navigateByUrl('/login');
+    const session = this.sessionData();
+
+    if (!session) {
+      this.router.navigateByUrl('/auth/login');
+      return;
     }
+
+    const redirectMap = {
+      ADMIN: '/admin/pacientes',
+      PROFESSIONAL: '/professional/agenda',
+      PATIENT: '/patient/consultas',
+    };
+    this.router.navigateByUrl(redirectMap[session.role]);
 
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
@@ -78,7 +83,10 @@ export class Layout implements OnInit, OnDestroy {
   }
 
   navItems = computed(() => {
-    const role = this.session.getSession()?.role;
+    const session = this.sessionData();
+    if (!session) return [];
+
+    const role = session.role;
 
     if (role === 'ADMIN') {
       return [

@@ -13,7 +13,6 @@ export interface AppState {
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   ui: uiReducer,
-  // userInterface: userInterfaceReducer,
 };
 
 export const effects = [AuthEffects];

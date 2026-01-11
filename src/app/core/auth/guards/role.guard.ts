@@ -23,7 +23,7 @@ export class RoleGuard implements CanActivate {
     const session = this.sessionService.getSession();
 
     if (!session || (allowedRoles && !allowedRoles.includes(session.role))) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
       return false;
     }
 

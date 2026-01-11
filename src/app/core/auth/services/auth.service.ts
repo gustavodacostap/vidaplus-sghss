@@ -29,6 +29,7 @@ export class AuthService {
     this.sessionService.setSession({
       userId: user.id,
       role: user.role,
+      name: user.name,
       token: this.generateToken(user),
     });
 

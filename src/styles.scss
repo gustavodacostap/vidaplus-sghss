@@ -42,10 +42,12 @@ body {
   @include my-theme.high-contrast-overrides(light);
 }
 
-.mat-sidenav-list {
+:root {
   @include mat.list-overrides(
     (
-      list-item-hover-state-layer-color: var(--mat-sys-tertiary),
+      active-indicator-shape: 0px,
+      list-item-label-text-color: var(--mat-sys-on-surface-variant),
+      list-item-hover-label-text-color: var(--mat-sys-on-surface-variant),
     )
   );
 }
