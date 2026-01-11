@@ -1,11 +1,20 @@
-import { Component, computed, inject, ViewChild, OnInit } from '@angular/core';
+import { Component, computed, inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
 import { Topbar } from './components/topbar/topbar';
 import { SessionService } from '../../../core/auth/services/session.service';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { TopbarService } from '../../../core/ui/services/topbar.service';
 
 @Component({
   selector: 'app-layout',
@@ -23,10 +32,14 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './layout.html',
   styleUrl: './layout.scss',
 })
-export class Layout implements OnInit {
+export class Layout implements OnInit, OnDestroy {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   private session = inject(SessionService);
+  private topbarService = inject(TopbarService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  private destroyed = new Subject<void>();
 
   ngOnInit() {
     const session = this.session.getSession();
@@ -40,6 +53,24 @@ export class Layout implements OnInit {
     } else {
       this.router.navigateByUrl('/login');
     }
+
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(() => {
+        const route = this.getDeepestRoute(this.route);
+        const config = route.snapshot.data['topbar'];
+        if (config) {
+          this.topbarService.set(config);
+        }
+      });
+  }
+
+  private getDeepestRoute(route: ActivatedRoute): ActivatedRoute {
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+    return route;
   }
 
   toggleSidenav() {
@@ -66,4 +97,9 @@ export class Layout implements OnInit {
 
     return [{ label: 'Consultas', icon: 'medical_services', route: '/patient/appointments' }];
   });
+
+  ngOnDestroy() {
+    this.destroyed.next();
+    this.destroyed.complete();
+  }
 }

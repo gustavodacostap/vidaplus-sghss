@@ -1,17 +1,69 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Output,
+  signal,
+  OnInit,
+  OnDestroy,
+  computed,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NotificationMenu } from '../notification-menu/notification-menu';
 import { ProfileMenu } from '../profile-menu/profile-menu';
 import { Logo } from '../../../logo/logo';
+import { TopbarService } from '../../../../../core/ui/services/topbar.service';
+import { MatButtonModule } from '@angular/material/button';
+import { map, Subject, takeUntil } from 'rxjs';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-topbar',
-  imports: [MatToolbarModule, MatIconModule, NotificationMenu, ProfileMenu, Logo],
+  imports: [MatToolbarModule, MatIconModule, NotificationMenu, ProfileMenu, Logo, MatButtonModule],
   templateUrl: './topbar.html',
   styleUrl: './topbar.scss',
 })
-export class Topbar {
-  // config = inject(TopbarService).getConfig();
+export class Topbar implements OnInit, OnDestroy {
+  config = inject(TopbarService).getConfig();
+
+  private destroyed$ = new Subject<void>();
+  private breakpointObserver = inject(BreakpointObserver);
+
   @Output() menuToggle = new EventEmitter<void>();
+
+  isMobile = signal(false);
+  showMenuLayout = computed(() => {
+    const config = this.config();
+    const isMobile = this.isMobile();
+
+    // Sem dynamicMode → sempre menu + logo
+    if (!config?.dynamicMode) {
+      return true;
+    }
+
+    // Com dynamicMode → menu no mobile, back no desktop
+    return !isMobile;
+  });
+  showNotifications = computed(() => {
+    const value = this.config()?.showNotifications;
+    return value !== false;
+  });
+
+  ngOnInit() {
+    this.breakpointObserver
+      .observe([Breakpoints.XSmall])
+      .pipe(
+        map((result) => result.matches),
+        takeUntil(this.destroyed$),
+      )
+      .subscribe((isMobile) => {
+        this.isMobile.set(isMobile);
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 }

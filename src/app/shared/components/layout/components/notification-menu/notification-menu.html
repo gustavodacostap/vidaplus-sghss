@@ -1,17 +1,19 @@
 <!-- BOTÃO / ORIGEM DO OVERLAY -->
 <button
-  type="button"
+  matIconButton
   cdkOverlayOrigin
   #trigger="cdkOverlayOrigin"
   aria-haspopup="menu"
-  aria-label="Abrir notificações"
+  [attr.aria-label]="
+    unreadCount() > 0 ? 'Abrir notificações. ' + unreadCount() + ' não lidas' : 'Abrir notificações'
+  "
   [attr.aria-expanded]="isOpen()"
-  [matBadge]="unreadCount()"
-  [matBadgeHidden]="unreadCount() === 0"
   (click)="isOpen.set(!isOpen())"
   class="relative flex items-center justify-center cursor-pointer"
 >
-  <mat-icon>notifications</mat-icon>
+  <mat-icon aria-hidden="true" [matBadge]="unreadCount()" [matBadgeHidden]="unreadCount() === 0"
+    >notifications</mat-icon
+  >
 </button>
 
 <!-- OVERLAY -->
