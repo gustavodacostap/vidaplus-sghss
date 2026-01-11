@@ -8,7 +8,7 @@
     unreadCount() > 0 ? 'Menu notificações. ' + unreadCount() + ' não lidas' : 'Menu notificações'
   "
   [attr.aria-expanded]="isOpen()"
-  (click)="isOpen.set(!isOpen())"
+  (click)="toggle()"
   class="flex items-center justify-center cursor-pointer"
 >
   <mat-icon aria-hidden="true" [matBadge]="unreadCount()" [matBadgeHidden]="unreadCount() === 0"

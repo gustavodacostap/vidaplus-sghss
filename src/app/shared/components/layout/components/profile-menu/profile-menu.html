@@ -5,7 +5,7 @@
   aria-haspopup="dialog"
   aria-label="Menu meu perfil"
   [attr.aria-expanded]="isOpen()"
-  (click)="isOpen.set(!isOpen())"
+  (click)="toggle()"
   class="flex items-center cursor-pointer"
 >
   <mat-icon>account_circle</mat-icon>

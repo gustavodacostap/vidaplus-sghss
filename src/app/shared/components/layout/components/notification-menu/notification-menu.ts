@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -15,6 +15,7 @@ import {
   clearNotifications,
   markAllNotificationsAsRead,
 } from '../../../../../core/ui/store/ui.actions';
+import { TopbarService } from '../../../../../core/ui/services/topbar.service';
 
 @Component({
   selector: 'app-notification-menu',
@@ -31,15 +32,20 @@ import {
 })
 export class NotificationMenu {
   store = inject(Store);
+  topbarService = inject(TopbarService);
 
   formatNotificationTime = formatNotificationTime;
-  isOpen = signal(false);
+  isOpen = computed(() => this.topbarService.isOpen('notifications'));
   private openedOnce = false;
   readonly notifications = this.store.selectSignal(selectNotifications);
   readonly unreadCount = this.store.selectSignal(selectUnreadNotificationsCount);
 
+  toggle() {
+    this.topbarService.open(this.isOpen() ? null : 'notifications');
+  }
+
   close() {
-    this.isOpen.set(false);
+    this.topbarService.close('notifications');
   }
 
   clearNotifications() {

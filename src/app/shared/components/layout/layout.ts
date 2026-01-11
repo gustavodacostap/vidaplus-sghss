@@ -1,4 +1,13 @@
-import { Component, computed, inject, ViewChild, OnInit, OnDestroy, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  ViewChild,
+  OnInit,
+  OnDestroy,
+  signal,
+  effect,
+} from '@angular/core';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import {
   ActivatedRoute,
@@ -16,6 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { TopbarService } from '../../../core/ui/services/topbar.service';
 import { Session } from '../../../core/auth/models/Session.model';
+import { NAV_ITEMS } from './layout.config';
 
 @Component({
   selector: 'app-layout',
@@ -57,6 +67,24 @@ export class Layout implements OnInit, OnDestroy {
       });
   }
 
+  ngAfterInitView() {
+    effect(() => {
+      const shouldBeOpen = this.topbarService.isOpen('sidenav');
+
+      if (shouldBeOpen && !this.sidenav.opened) {
+        this.sidenav.open();
+      }
+
+      if (!shouldBeOpen && this.sidenav.opened) {
+        this.sidenav.close();
+      }
+    });
+
+    this.sidenav.closedStart.pipe(takeUntil(this.destroyed)).subscribe(() => {
+      this.topbarService.close('sidenav');
+    });
+  }
+
   private getDeepestRoute(route: ActivatedRoute): ActivatedRoute {
     while (route.firstChild) {
       route = route.firstChild;
@@ -65,7 +93,7 @@ export class Layout implements OnInit, OnDestroy {
   }
 
   toggleSidenav() {
-    this.sidenav.toggle();
+    this.topbarService.open('sidenav');
   }
 
   navItems = computed(() => {
@@ -74,22 +102,7 @@ export class Layout implements OnInit, OnDestroy {
 
     const role = session.role;
 
-    if (role === 'ADMIN') {
-      return [
-        { label: 'Pacientes', icon: 'groups', route: '/admin/pacientes' },
-        { label: 'Profissionais', icon: 'medical_services', route: '/admin/profissionais' },
-        { label: 'Consultas', icon: 'medical_information', route: '/admin/consultas' },
-        { label: 'Leitos', icon: 'airline_seat_flat', route: '/admin/leitos' },
-        { label: 'Relatórios', icon: 'analytics', route: '/admin/relatorios' },
-        { label: 'Gestão de Usuários', icon: 'manage_accounts', route: '/admin/gestao-usuarios' },
-      ];
-    }
-
-    if (role === 'PROFESSIONAL') {
-      return [{ label: 'Agenda', icon: 'event', route: '/professional/agenda' }];
-    }
-
-    return [{ label: 'Consultas', icon: 'medical_services', route: '/patient/appointments' }];
+    return NAV_ITEMS[role];
   });
 
   ngOnDestroy() {

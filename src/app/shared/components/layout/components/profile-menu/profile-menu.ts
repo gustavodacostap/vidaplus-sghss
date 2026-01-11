@@ -1,5 +1,5 @@
 import { OverlayModule } from '@angular/cdk/overlay';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,6 +8,7 @@ import { SessionService } from '../../../../../core/auth/services/session.servic
 import { Session } from '../../../../../core/auth/models/Session.model';
 import { UserRole } from '../../../../../core/auth/models/User.model';
 import { Router, RouterLink } from '@angular/router';
+import { TopbarService } from '../../../../../core/ui/services/topbar.service';
 
 @Component({
   selector: 'app-profile-menu',
@@ -23,14 +24,19 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './profile-menu.scss',
 })
 export class ProfileMenu {
+  private topbarService = inject(TopbarService);
   private session = inject(SessionService);
   private route = inject(Router);
 
-  isOpen = signal(false);
+  isOpen = computed(() => this.topbarService.isOpen('profile'));
   sessionData = signal<Session | null>(this.session.getSession());
 
+  toggle() {
+    this.topbarService.open(this.isOpen() ? null : 'profile');
+  }
+
   close() {
-    this.isOpen.set(false);
+    this.topbarService.close('profile');
   }
 
   logout() {
