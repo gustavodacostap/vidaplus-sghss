@@ -5,10 +5,11 @@
   <!-- SIDENAV -->
   <mat-sidenav-container class="h-full w-full sidenav">
     <mat-sidenav
-      #sidenav
       mode="over"
       role="navigation"
       aria-label="Navegação principal"
+      [opened]="isSidenavOpen()"
+      (closed)="topbarService.close('sidenav')"
       class="w-64"
     >
       <mat-nav-list class="nav-list">

@@ -7,19 +7,12 @@ import { MatListModule } from '@angular/material/list';
 import { SessionService } from '../../../../../core/auth/services/session.service';
 import { Session } from '../../../../../core/auth/models/Session.model';
 import { UserRole } from '../../../../../core/auth/models/User.model';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TopbarService } from '../../../../../core/ui/services/topbar.service';
 
 @Component({
   selector: 'app-profile-menu',
-  imports: [
-    MatIconModule,
-    MatButtonModule,
-    MatDividerModule,
-    OverlayModule,
-    MatListModule,
-    RouterLink,
-  ],
+  imports: [MatIconModule, MatButtonModule, MatDividerModule, OverlayModule, MatListModule],
   templateUrl: './profile-menu.html',
   styleUrl: './profile-menu.scss',
 })
@@ -42,6 +35,22 @@ export class ProfileMenu {
   logout() {
     this.session.clearSession();
     this.route.navigate(['/auth/login']);
+    this.close();
+  }
+
+  goToProfile() {
+    const userRole = this.sessionData()?.role;
+
+    const roleMap = {
+      ADMIN: 'admin',
+      PROFESSIONAL: 'profissional',
+      PATIENT: 'paciente',
+    };
+
+    if (userRole) {
+      this.route.navigate([`/${roleMap[userRole]}/profile`]);
+    }
+    this.close();
   }
 
   formatRole(role: UserRole | undefined): string {

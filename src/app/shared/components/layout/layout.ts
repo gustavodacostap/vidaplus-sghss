@@ -1,14 +1,5 @@
-import {
-  Component,
-  computed,
-  inject,
-  ViewChild,
-  OnInit,
-  OnDestroy,
-  signal,
-  effect,
-} from '@angular/core';
-import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { Component, computed, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -44,13 +35,14 @@ import { NAV_ITEMS } from './layout.config';
   styleUrl: './layout.scss',
 })
 export class Layout implements OnInit, OnDestroy {
-  @ViewChild('sidenav') sidenav!: MatSidenav;
   private session = inject(SessionService);
-  private topbarService = inject(TopbarService);
+  topbarService = inject(TopbarService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
   private destroyed = new Subject<void>();
+
+  isSidenavOpen = computed(() => this.topbarService.isOpen('sidenav'));
 
   sessionData = signal<Session | null>(this.session.getSession());
 
@@ -67,24 +59,6 @@ export class Layout implements OnInit, OnDestroy {
       });
   }
 
-  ngAfterInitView() {
-    effect(() => {
-      const shouldBeOpen = this.topbarService.isOpen('sidenav');
-
-      if (shouldBeOpen && !this.sidenav.opened) {
-        this.sidenav.open();
-      }
-
-      if (!shouldBeOpen && this.sidenav.opened) {
-        this.sidenav.close();
-      }
-    });
-
-    this.sidenav.closedStart.pipe(takeUntil(this.destroyed)).subscribe(() => {
-      this.topbarService.close('sidenav');
-    });
-  }
-
   private getDeepestRoute(route: ActivatedRoute): ActivatedRoute {
     while (route.firstChild) {
       route = route.firstChild;
@@ -93,7 +67,7 @@ export class Layout implements OnInit, OnDestroy {
   }
 
   toggleSidenav() {
-    this.topbarService.open('sidenav');
+    this.topbarService.toggle('sidenav');
   }
 
   navItems = computed(() => {

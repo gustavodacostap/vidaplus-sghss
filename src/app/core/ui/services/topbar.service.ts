@@ -33,4 +33,8 @@ export class TopbarService {
   isOpen(menu: OpenMenu) {
     return this._openMenu() === menu;
   }
+
+  toggle(menu: OpenMenu) {
+    this._openMenu.set(this._openMenu() === menu ? null : menu);
+  }
 }

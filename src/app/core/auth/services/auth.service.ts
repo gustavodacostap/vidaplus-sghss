@@ -30,8 +30,8 @@ export class AuthService {
 
     const redirectMap = {
       ADMIN: '/admin/pacientes',
-      PROFESSIONAL: '/professional/agenda',
-      PATIENT: '/patient/consultas',
+      PROFESSIONAL: '/profissional/agenda',
+      PATIENT: '/paciente/consultas',
     };
 
     return of(user).pipe(
