@@ -45,20 +45,6 @@ export class Layout implements OnInit, OnDestroy {
   sessionData = signal<Session | null>(this.session.getSession());
 
   ngOnInit() {
-    const session = this.sessionData();
-
-    if (!session) {
-      this.router.navigateByUrl('/auth/login');
-      return;
-    }
-
-    const redirectMap = {
-      ADMIN: '/admin/pacientes',
-      PROFESSIONAL: '/professional/agenda',
-      PATIENT: '/patient/consultas',
-    };
-    this.router.navigateByUrl(redirectMap[session.role]);
-
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .pipe(takeUntil(this.destroyed))

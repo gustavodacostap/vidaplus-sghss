@@ -7,9 +7,8 @@ export const authReducer = createReducer(
   on(authActions.login, (state): AuthState => ({ ...state, loading: true })),
   on(
     authActions.loginSuccess,
-    (state, { user }): AuthState => ({
+    (state): AuthState => ({
       ...state,
-      user,
       loading: false,
     }),
   ),

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import * as authActions from './auth.actions';
 import { AuthService } from '../../../../core/auth/services/auth.service';
 import { Router } from '@angular/router';
@@ -23,18 +23,4 @@ export class AuthEffects {
       ),
     );
   });
-
-  redirectAfterLogin$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(authActions.loginSuccess),
-        tap(({ user }) => {
-          if (user.role === 'ADMIN') this.router.navigate(['/admin']);
-          if (user.role === 'PROFESSIONAL') this.router.navigate(['/dashboard']);
-          if (user.role === 'PATIENT') this.router.navigate(['/dashboard']);
-        }),
-      );
-    },
-    { dispatch: false },
-  );
 }

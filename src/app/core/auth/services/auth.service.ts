@@ -1,13 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { StorageService } from '../../storage/services/storage.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { User } from '../models/User.model';
 import * as CryptoJS from 'crypto-js';
 import { SessionService } from './session.service';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private storage = inject(StorageService);
+  private router = inject(Router);
   private sessionService = inject(SessionService);
 
   private readonly USERS_KEY = 'users';
@@ -26,14 +28,24 @@ export class AuthService {
       throw new Error('Credenciais inválidas');
     }
 
-    this.sessionService.setSession({
-      userId: user.id,
-      role: user.role,
-      name: user.name,
-      token: this.generateToken(user),
-    });
+    const redirectMap = {
+      ADMIN: '/admin/pacientes',
+      PROFESSIONAL: '/professional/agenda',
+      PATIENT: '/patient/consultas',
+    };
 
-    return of(user);
+    return of(user).pipe(
+      tap(() => {
+        this.sessionService.setSession({
+          userId: user.id,
+          role: user.role,
+          name: user.name,
+          token: this.generateToken(user),
+        });
+
+        this.router.navigateByUrl(redirectMap[user.role]);
+      }),
+    );
   }
 
   logout(): void {

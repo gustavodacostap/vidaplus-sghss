@@ -7,15 +7,27 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { login } from './store/auth.actions';
 import { Logo } from '../../../shared/components/logo/logo';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { selectLoading } from './store/auth.selectors';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, MatInputModule, Logo, MatButtonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    Logo,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
   private store = inject(Store);
+
+  loading = this.store.selectSignal(selectLoading);
+
   loginForm = new FormGroup({
     email: new FormControl<string>('', {
       nonNullable: true,
