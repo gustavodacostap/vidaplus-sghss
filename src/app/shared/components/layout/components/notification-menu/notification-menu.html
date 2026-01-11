@@ -22,7 +22,7 @@
   [cdkConnectedOverlayOrigin]="trigger"
   [cdkConnectedOverlayOpen]="isOpen()"
   cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
-  [cdkConnectedOverlayOffsetY]="8"
+  [cdkConnectedOverlayOffsetY]="4"
   (keydown.escape)="close()"
 >
   <!-- PAINEL -->
@@ -46,12 +46,7 @@
           <li role="menuitem">
             <div class="flex flex-col px-4 py-3 gap-2.5">
               <div class="flex justify-between items-center">
-                <div class="flex gap-2.5">
-                  <span class="font-medium"> {{ item.title }} </span>
-                  <span class="text-(--mat-sys-outline)">
-                    {{ formatNotificationTime(item.timestamp) }}
-                  </span>
-                </div>
+                <span class="font-medium"> {{ item.title }} </span>
                 @if (!item.read) {
                   <span
                     class="inline-flex h-2 w-2 rounded-full bg-(--mat-sys-primary)"
@@ -61,6 +56,9 @@
                 }
               </div>
               <p>{{ item.description }}</p>
+              <span class="text-(--mat-sys-outline) self-end">
+                {{ formatNotificationTime(item.timestamp) }}
+              </span>
             </div>
           </li>
           <mat-divider></mat-divider>
