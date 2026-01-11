@@ -1,4 +1,4 @@
-<mat-toolbar class="toolbar">
+<mat-toolbar class="toolbar" role="banner">
   <div class="flex items-center gap-3">
     @if (showMenuLayout()) {
       <button
@@ -18,10 +18,10 @@
     }
   </div>
   <span class="flex-1" aria-hidden="true"></span>
-  <div class="flex gap-2 items-center">
+  <nav aria-label="Ações do usuário" class="flex gap-2 items-center">
     @if (showNotifications()) {
       <app-notification-menu></app-notification-menu>
     }
     <app-profile-menu></app-profile-menu>
-  </div>
+  </nav>
 </mat-toolbar>

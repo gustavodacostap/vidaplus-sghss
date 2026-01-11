@@ -4,7 +4,13 @@
 
   <!-- SIDENAV -->
   <mat-sidenav-container class="h-full w-full sidenav">
-    <mat-sidenav #sidenav mode="over" class="w-64">
+    <mat-sidenav
+      #sidenav
+      mode="over"
+      role="navigation"
+      aria-label="Navegação principal"
+      class="w-64"
+    >
       <mat-nav-list class="nav-list">
         @for (item of navItems(); track item.label) {
           <a
@@ -14,14 +20,14 @@
             #rla="routerLinkActive"
             [activated]="rla.isActive"
           >
-            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            <mat-icon matListItemIcon aria-hidden="true">{{ item.icon }}</mat-icon>
             <span matListItemTitle>{{ item.label }}</span>
           </a>
         }
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
-      <main class="flex-1 overflow-auto bg-gray-50 p-5">
+      <main tabindex="-1" class="flex-1 overflow-auto bg-gray-50 p-5">
         <router-outlet />
       </main>
     </mat-sidenav-content>
