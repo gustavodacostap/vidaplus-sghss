@@ -1,6 +1,6 @@
 export interface Paciente {
   nome: string;
   cpf: string;
-  dataNascimento: Date;
+  dataNascimento: string;
   status: boolean;
 }

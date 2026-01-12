@@ -7,20 +7,42 @@ import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
 import { loadPacientes } from '../store/pacientes.actions';
 import { selectPacientes } from '../store/pacientes.selectors';
-import { Subject, takeUntil } from 'rxjs';
+import { combineLatest, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { Paciente } from '../models/Paciente.model';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CommonModule } from '@angular/common';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ViewPacienteDialog } from '../dialogs/view-paciente-dialog/view-paciente-dialog';
+
+type PacienteColumn = keyof Pick<Paciente, 'nome' | 'cpf' | 'dataNascimento' | 'status'>;
 
 @Component({
   selector: 'app-pacientes',
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatPaginatorModule, MatIconModule],
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatAutocompleteModule,
+    CommonModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './pacientes.html',
   styleUrl: './pacientes.scss',
 })
 export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
   private store = inject(Store);
   private destroyed$ = new Subject<void>();
+  private dialog = inject(MatDialog);
 
-  displayedColumns = ['nome', 'cpf', 'dataNascimento', 'status'];
+  displayedColumns: PacienteColumn[] = ['nome', 'cpf', 'dataNascimento', 'status'];
+
   allColumns = [...this.displayedColumns, 'actions'];
 
   columnLabels: Record<string, string> = {
@@ -30,7 +52,17 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
     status: 'Status',
   };
 
-  dataSource = new MatTableDataSource();
+  columnFormatters: Partial<Record<keyof Paciente, (value: any, row: Paciente) => string>> = {
+    status: (value: boolean) => (value ? 'Ativo' : 'Inativo'),
+  };
+
+  unidades = ['Alphaville', 'Barueri', 'Osasco'];
+  filteredUnidades$!: Observable<string[]>;
+
+  nomeCtrl = new FormControl('');
+  cpfCtrl = new FormControl('', [Validators.maxLength(14)]);
+
+  dataSource = new MatTableDataSource<Paciente>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -40,13 +72,31 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
     this.store
       .select(selectPacientes)
       .pipe(takeUntil(this.destroyed$))
-      .subscribe((patients) => {
-        this.dataSource.data = patients.map((p) => {
-          return {
-            ...p,
-            dataNascimento: new Date(p.dataNascimento).toLocaleDateString('pt-BR'),
-          };
+      .subscribe((pacientes) => {
+        this.dataSource.data = pacientes;
+      });
+
+    this.dataSource.filterPredicate = (data, filter) => {
+      const { nome, cpf } = JSON.parse(filter);
+
+      return (
+        (!nome || data.nome.toLowerCase().includes(nome.toLowerCase())) &&
+        (!cpf || data.cpf.includes(cpf))
+      );
+    };
+
+    combineLatest([
+      this.nomeCtrl.valueChanges.pipe(startWith('')),
+      this.cpfCtrl.valueChanges.pipe(startWith('')),
+    ])
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(([nome, cpf]) => {
+        this.dataSource.filter = JSON.stringify({
+          nome: nome ?? '',
+          cpf: cpf ?? '',
         });
+
+        this.dataSource.paginator?.firstPage();
       });
   }
 
@@ -54,12 +104,22 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
     this.dataSource.paginator = this.paginator;
   }
 
-  viewPaciente(paciente: Paciente) {
-    console.log('Implementar viewPaciente' + paciente);
+  viewPaciente(pacienteId: number): void {
+    this.dialog.open(ViewPacienteDialog, {
+      width: '600px',
+      data: { pacienteId },
+    });
   }
 
   editPaciente(paciente: Paciente) {
     console.log('Implementar editPaciente' + paciente);
+  }
+
+  formatCell(column: keyof Paciente, row: Paciente): string {
+    const formatter = this.columnFormatters[column];
+    const value = row[column];
+
+    return formatter ? formatter(value, row) : String(value ?? '');
   }
 
   ngOnDestroy() {

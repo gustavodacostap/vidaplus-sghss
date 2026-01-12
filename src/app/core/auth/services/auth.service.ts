@@ -86,9 +86,9 @@ export class AuthService {
   // }
 
   seedPatientsIfNeeded(): void {
-    const patients = this.storage.get<Paciente[]>(this.PACIENTES_KEY) ?? [];
+    // const patients = this.storage.get<Paciente[]>(this.PACIENTES_KEY) ?? [];
 
-    if (patients.length > 0) return;
+    // if (patients.length > 0) return;
 
     this.storage.set(this.PACIENTES_KEY, this.createMockPatients());
   }
@@ -97,20 +97,74 @@ export class AuthService {
     return [
       {
         nome: 'João da Silva',
-        cpf: '123.456.789-00',
-        dataNascimento: new Date(1990, 4, 15),
+        cpf: '12345678900',
+        dataNascimento: '15/04/1990',
         status: true,
       },
       {
         nome: 'Maria Oliveira',
-        cpf: '987.654.321-00',
-        dataNascimento: new Date(1985, 10, 3),
+        cpf: '98765432100',
+        dataNascimento: '03/10/1985',
         status: false,
       },
       {
         nome: 'Carlos Pereira',
-        cpf: '456.789.123-00',
-        dataNascimento: new Date(2001, 0, 22),
+        cpf: '45678912300',
+        dataNascimento: '22/01/2001',
+        status: true,
+      },
+      {
+        nome: 'João da Silva',
+        cpf: '12345678900',
+        dataNascimento: '15/04/1990',
+        status: true,
+      },
+      {
+        nome: 'Maria Oliveira',
+        cpf: '98765432100',
+        dataNascimento: '03/10/1985',
+        status: false,
+      },
+      {
+        nome: 'Carlos Pereira',
+        cpf: '45678912300',
+        dataNascimento: '22/01/2001',
+        status: true,
+      },
+      {
+        nome: 'João da Silva',
+        cpf: '12345678900',
+        dataNascimento: '15/04/1990',
+        status: true,
+      },
+      {
+        nome: 'Maria Oliveira',
+        cpf: '98765432100',
+        dataNascimento: '03/10/1985',
+        status: false,
+      },
+      {
+        nome: 'Carlos Pereira',
+        cpf: '45678912300',
+        dataNascimento: '22/01/2001',
+        status: true,
+      },
+      {
+        nome: 'João da Silva',
+        cpf: '12345678900',
+        dataNascimento: '15/04/1990',
+        status: true,
+      },
+      {
+        nome: 'Maria Oliveira',
+        cpf: '98765432100',
+        dataNascimento: '03/10/1985',
+        status: false,
+      },
+      {
+        nome: 'Carlos Pereira',
+        cpf: '45678912300',
+        dataNascimento: '22/01/2001',
         status: true,
       },
     ];
