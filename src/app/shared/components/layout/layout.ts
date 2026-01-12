@@ -40,7 +40,7 @@ export class Layout implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  private destroyed = new Subject<void>();
+  private destroyed$ = new Subject<void>();
 
   isSidenavOpen = computed(() => this.topbarService.isOpen('sidenav'));
 
@@ -49,7 +49,7 @@ export class Layout implements OnInit, OnDestroy {
   ngOnInit() {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
-      .pipe(takeUntil(this.destroyed))
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
         const route = this.getDeepestRoute(this.route);
         const config = route.snapshot.data['topbar'];
@@ -80,7 +80,7 @@ export class Layout implements OnInit, OnDestroy {
   });
 
   ngOnDestroy() {
-    this.destroyed.next();
-    this.destroyed.complete();
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }

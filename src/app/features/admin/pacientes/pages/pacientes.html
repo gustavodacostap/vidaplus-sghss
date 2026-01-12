@@ -1,1 +1,86 @@
-<p>pacientes works!</p>
+<h1 id="page-title">Pacientes</h1>
+
+<section aria-labelledby="page-title">
+  <!-- FILTROS -->
+  <section aria-label="Filtros de pacientes">
+    <form role="search" class="filters">
+      <mat-form-field appearance="outline">
+        <mat-label>Paciente</mat-label>
+        <input
+          matInput
+          type="search"
+          placeholder="Pesquisar paciente"
+          aria-label="Pesquisar paciente pelo nome"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Unidade</mat-label>
+        <input
+          matInput
+          type="search"
+          placeholder="Pesquisar unidade"
+          aria-label="Pesquisar unidade"
+        />
+      </mat-form-field>
+    </form>
+  </section>
+
+  <!-- TABELA -->
+  <section aria-label="Lista de pacientes">
+    <div class="table-container" role="region" tabindex="0">
+      <table mat-table [dataSource]="dataSource" aria-describedby="page-title" class="table">
+        <!-- COLUNAS SIMPLES -->
+        @for (column of displayedColumns; track column) {
+          <ng-container [matColumnDef]="column">
+            <th mat-header-cell *matHeaderCellDef scope="col">
+              {{ columnLabels[column] }}
+            </th>
+
+            <td mat-cell *matCellDef="let paciente">
+              {{ paciente[column] }}
+            </td>
+          </ng-container>
+        }
+
+        <!-- COLUNA AÇÕES -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef scope="col">Ações</th>
+
+          <td mat-cell *matCellDef="let paciente">
+            <div class="actions" role="group" aria-label="Ações do paciente">
+              <button
+                mat-icon-button
+                color="primary"
+                aria-label="Visualizar paciente"
+                (click)="viewPaciente(paciente)"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                color="accent"
+                aria-label="Editar paciente"
+                (click)="editPaciente(paciente)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- HEADER E ROWS -->
+        <tr mat-header-row *matHeaderRowDef="allColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: allColumns"></tr>
+      </table>
+    </div>
+
+    <!-- PAGINAÇÃO -->
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      aria-label="Paginação da lista de pacientes"
+    />
+  </section>
+</section>
