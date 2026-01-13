@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { defer, Observable, of } from 'rxjs';
-import { Paciente } from '../models/Paciente.model';
+import { PacienteListItem } from '../models/PacienteListItem.model';
 import { StorageService } from '../../../../core/storage/services/storage.service';
 
 @Injectable({
@@ -10,9 +10,9 @@ export class PacientesService {
   private readonly STORAGE_KEY = 'pacientes';
   private storage = inject(StorageService);
 
-  getPatients(): Observable<Paciente[]> {
+  getPatients(): Observable<PacienteListItem[]> {
     return defer(() => {
-      const data = this.storage.get<Paciente[]>(this.STORAGE_KEY);
+      const data = this.storage.get<PacienteListItem[]>(this.STORAGE_KEY);
 
       if (!data) {
         throw new Error('Nenhum paciente encontrado');

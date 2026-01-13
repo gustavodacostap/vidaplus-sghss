@@ -1,7 +1,7 @@
-import { Paciente } from '../models/Paciente.model';
+import { PacienteListItem } from '../models/PacienteListItem.model';
 
 export interface PacientesState {
-  pacientes: Paciente[];
+  pacientes: PacienteListItem[];
   loading: boolean;
   error: string | null;
 }

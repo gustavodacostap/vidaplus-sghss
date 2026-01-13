@@ -5,7 +5,7 @@ import { User } from '../models/User.model';
 import * as CryptoJS from 'crypto-js';
 import { SessionService } from './session.service';
 import { Router } from '@angular/router';
-import { Paciente } from '../../../features/admin/pacientes/models/Paciente.model';
+import { PacienteListItem } from '../../../features/admin/pacientes/models/PacienteListItem.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -93,75 +93,87 @@ export class AuthService {
     this.storage.set(this.PACIENTES_KEY, this.createMockPatients());
   }
 
-  private createMockPatients(): Paciente[] {
+  private createMockPatients(): PacienteListItem[] {
     return [
       {
+        id: 1,
         nome: 'João da Silva',
         cpf: '12345678900',
         dataNascimento: '15/04/1990',
         status: true,
       },
       {
+        id: 2,
         nome: 'Maria Oliveira',
         cpf: '98765432100',
         dataNascimento: '03/10/1985',
         status: false,
       },
       {
+        id: 3,
         nome: 'Carlos Pereira',
         cpf: '45678912300',
         dataNascimento: '22/01/2001',
         status: true,
       },
       {
+        id: 1,
         nome: 'João da Silva',
         cpf: '12345678900',
         dataNascimento: '15/04/1990',
         status: true,
       },
       {
+        id: 2,
         nome: 'Maria Oliveira',
         cpf: '98765432100',
         dataNascimento: '03/10/1985',
         status: false,
       },
       {
+        id: 3,
         nome: 'Carlos Pereira',
         cpf: '45678912300',
         dataNascimento: '22/01/2001',
         status: true,
       },
       {
+        id: 1,
         nome: 'João da Silva',
         cpf: '12345678900',
         dataNascimento: '15/04/1990',
         status: true,
       },
       {
+        id: 2,
         nome: 'Maria Oliveira',
         cpf: '98765432100',
         dataNascimento: '03/10/1985',
         status: false,
       },
       {
+        id: 3,
         nome: 'Carlos Pereira',
         cpf: '45678912300',
         dataNascimento: '22/01/2001',
         status: true,
       },
       {
+        id: 1,
         nome: 'João da Silva',
         cpf: '12345678900',
         dataNascimento: '15/04/1990',
         status: true,
       },
       {
+        id: 2,
         nome: 'Maria Oliveira',
         cpf: '98765432100',
         dataNascimento: '03/10/1985',
         status: false,
       },
       {
+        id: 3,
         nome: 'Carlos Pereira',
         cpf: '45678912300',
         dataNascimento: '22/01/2001',

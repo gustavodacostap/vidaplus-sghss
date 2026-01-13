@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { loadPacientes } from '../store/pacientes.actions';
 import { selectPacientes } from '../store/pacientes.selectors';
 import { combineLatest, Observable, startWith, Subject, takeUntil } from 'rxjs';
-import { Paciente } from '../models/Paciente.model';
+import { PacienteListItem } from '../models/PacienteListItem.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -17,7 +17,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewPacienteDialog } from '../dialogs/view-paciente-dialog/view-paciente-dialog';
 
-type PacienteColumn = keyof Pick<Paciente, 'nome' | 'cpf' | 'dataNascimento' | 'status'>;
+type PacienteColumn = keyof Pick<PacienteListItem, 'nome' | 'cpf' | 'dataNascimento' | 'status'>;
 
 @Component({
   selector: 'app-pacientes',
@@ -52,7 +52,9 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
     status: 'Status',
   };
 
-  columnFormatters: Partial<Record<keyof Paciente, (value: any, row: Paciente) => string>> = {
+  columnFormatters: Partial<
+    Record<keyof PacienteListItem, (value: any, row: PacienteListItem) => string>
+  > = {
     status: (value: boolean) => (value ? 'Ativo' : 'Inativo'),
   };
 
@@ -62,7 +64,7 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
   nomeCtrl = new FormControl('');
   cpfCtrl = new FormControl('', [Validators.maxLength(14)]);
 
-  dataSource = new MatTableDataSource<Paciente>();
+  dataSource = new MatTableDataSource<PacienteListItem>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -111,11 +113,11 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
     });
   }
 
-  editPaciente(paciente: Paciente) {
+  editPaciente(paciente: PacienteListItem) {
     console.log('Implementar editPaciente' + paciente);
   }
 
-  formatCell(column: keyof Paciente, row: Paciente): string {
+  formatCell(column: keyof PacienteListItem, row: PacienteListItem): string {
     const formatter = this.columnFormatters[column];
     const value = row[column];
 

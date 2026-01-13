@@ -78,6 +78,10 @@
         <!-- HEADER E ROWS -->
         <tr mat-header-row *matHeaderRowDef="allColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: allColumns"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">Nenhum paciente encontrado com esse filtro.</td>
+        </tr>
       </table>
     </div>
 

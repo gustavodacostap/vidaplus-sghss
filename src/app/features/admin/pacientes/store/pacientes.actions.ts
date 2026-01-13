@@ -1,11 +1,11 @@
 import { createAction, props } from '@ngrx/store';
-import { Paciente } from '../models/Paciente.model';
+import { PacienteListItem } from '../models/PacienteListItem.model';
 
 export const loadPacientes = createAction('[Pacientes] Load');
 
 export const loadPacientesSuccess = createAction(
   '[Pacientes] Load Success',
-  props<{ pacientes: Paciente[] }>(),
+  props<{ pacientes: PacienteListItem[] }>(),
 );
 
 export const loadPacientesFailure = createAction(
