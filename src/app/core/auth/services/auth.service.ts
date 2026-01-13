@@ -5,7 +5,7 @@ import { User } from '../models/User.model';
 import * as CryptoJS from 'crypto-js';
 import { SessionService } from './session.service';
 import { Router } from '@angular/router';
-import { PacienteListItem } from '../../../features/admin/pacientes/models/PacienteListItem.model';
+import { Paciente } from '../../../features/admin/pacientes/models/Paciente.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -17,8 +17,7 @@ export class AuthService {
   private readonly PACIENTES_KEY = 'pacientes';
 
   constructor() {
-    // this.seedUserIfNeeded();
-    this.seedPatientsIfNeeded();
+    this.storage.set(this.PACIENTES_KEY, this.createMockPatients());
   }
 
   login(email: string, password: string): Observable<User> {
@@ -85,98 +84,51 @@ export class AuthService {
   //   this.storage.set(this.USERS_KEY, [...users, defaultUser]);
   // }
 
-  seedPatientsIfNeeded(): void {
-    // const patients = this.storage.get<Paciente[]>(this.PACIENTES_KEY) ?? [];
-
-    // if (patients.length > 0) return;
-
-    this.storage.set(this.PACIENTES_KEY, this.createMockPatients());
-  }
-
-  private createMockPatients(): PacienteListItem[] {
+  private createMockPatients(): Paciente[] {
     return [
       {
         id: 1,
+        userId: 'u1',
         nome: 'João da Silva',
+        dataNascimento: '1990-04-15',
+        idade: 34,
         cpf: '12345678900',
-        dataNascimento: '15/04/1990',
+        email: 'joao@email.com',
+        celular: '11999999999',
+        tipoSanguineo: 'O+',
+        peso: 72.5,
+        altura: 1.78,
+        alergias: ['Dipirona'],
         status: true,
       },
       {
         id: 2,
+        userId: 'u2',
         nome: 'Maria Oliveira',
+        dataNascimento: '1985-10-03',
+        idade: 39,
         cpf: '98765432100',
-        dataNascimento: '03/10/1985',
+        email: 'maria@email.com',
+        celular: '11988888888',
+        tipoSanguineo: 'A-',
+        peso: 65.2,
+        altura: 1.65,
+        alergias: [],
         status: false,
       },
       {
         id: 3,
+        userId: 'u3',
         nome: 'Carlos Pereira',
+        dataNascimento: '2001-01-22',
+        idade: 24,
         cpf: '45678912300',
-        dataNascimento: '22/01/2001',
-        status: true,
-      },
-      {
-        id: 1,
-        nome: 'João da Silva',
-        cpf: '12345678900',
-        dataNascimento: '15/04/1990',
-        status: true,
-      },
-      {
-        id: 2,
-        nome: 'Maria Oliveira',
-        cpf: '98765432100',
-        dataNascimento: '03/10/1985',
-        status: false,
-      },
-      {
-        id: 3,
-        nome: 'Carlos Pereira',
-        cpf: '45678912300',
-        dataNascimento: '22/01/2001',
-        status: true,
-      },
-      {
-        id: 1,
-        nome: 'João da Silva',
-        cpf: '12345678900',
-        dataNascimento: '15/04/1990',
-        status: true,
-      },
-      {
-        id: 2,
-        nome: 'Maria Oliveira',
-        cpf: '98765432100',
-        dataNascimento: '03/10/1985',
-        status: false,
-      },
-      {
-        id: 3,
-        nome: 'Carlos Pereira',
-        cpf: '45678912300',
-        dataNascimento: '22/01/2001',
-        status: true,
-      },
-      {
-        id: 1,
-        nome: 'João da Silva',
-        cpf: '12345678900',
-        dataNascimento: '15/04/1990',
-        status: true,
-      },
-      {
-        id: 2,
-        nome: 'Maria Oliveira',
-        cpf: '98765432100',
-        dataNascimento: '03/10/1985',
-        status: false,
-      },
-      {
-        id: 3,
-        nome: 'Carlos Pereira',
-        cpf: '45678912300',
-        dataNascimento: '22/01/2001',
+        email: 'carlos@email.com',
+        celular: '11977777777',
+        tipoSanguineo: 'B+',
+        peso: 80.0,
+        altura: 1.82,
+        alergias: ['Lactose', 'Glúten'],
         status: true,
       },
     ];

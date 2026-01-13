@@ -2,7 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { PacientesService } from '../services/pacientes.service';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { loadPacientes, loadPacientesFailure, loadPacientesSuccess } from './pacientes.actions';
+import {
+  loadPacienteById,
+  loadPacienteByIdFailure,
+  loadPacienteByIdSuccess,
+  loadPacientes,
+  loadPacientesFailure,
+  loadPacientesSuccess,
+} from './pacientes.actions';
 
 @Injectable()
 export class PacientesEffects {
@@ -13,9 +20,21 @@ export class PacientesEffects {
     return this.actions$.pipe(
       ofType(loadPacientes),
       switchMap(() =>
-        this.service.getPatients().pipe(
+        this.service.getPacientesTable().pipe(
           map((pacientes) => loadPacientesSuccess({ pacientes })),
           catchError((err) => of(loadPacientesFailure({ error: err.message }))),
+        ),
+      ),
+    );
+  });
+
+  loadPacienteById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(loadPacienteById),
+      switchMap(({ id }) =>
+        this.service.getPacienteById(id).pipe(
+          map((paciente) => loadPacienteByIdSuccess({ paciente })),
+          catchError((err) => of(loadPacienteByIdFailure({ error: err.message }))),
         ),
       ),
     );

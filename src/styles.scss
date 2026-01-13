@@ -50,4 +50,10 @@ body {
       list-item-hover-label-text-color: var(--mat-sys-on-surface-variant),
     )
   );
+
+  @include mat.dialog-overrides(
+    (
+      supporting-text-color: var(--mat-sys-on-background),
+    )
+  );
 }

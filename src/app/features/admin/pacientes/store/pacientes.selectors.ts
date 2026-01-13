@@ -8,3 +8,5 @@ export const selectPacientes = createSelector(selectPacientesState, (s) => s.pac
 export const selectPatientsLoading = createSelector(selectPacientesState, (s) => s.loading);
 
 export const selectPatientsError = createSelector(selectPacientesState, (s) => s.error);
+
+export const selectPaciente = createSelector(selectPacientesState, (s) => s.paciente);
