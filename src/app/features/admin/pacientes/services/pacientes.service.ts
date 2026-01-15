@@ -33,6 +33,10 @@ export class PacientesService {
         status: p.status,
       }));
 
+      if (!listItems) {
+        return throwError(() => new Error(`Erro ao buscar dados dos pacientes`));
+      }
+
       return of(listItems);
     });
   }

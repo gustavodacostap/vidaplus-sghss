@@ -22,14 +22,29 @@ export const routes: Routes = [
         children: [
           route({
             path: 'pacientes',
-            loadComponent: () =>
-              import('./features/admin/pacientes/pages/pacientes').then((m) => m.Pacientes),
-            data: {
-              topbar: {
-                dynamicMode: true,
-                pageTitle: 'Pacientes',
-              },
-            },
+            children: [
+              route({
+                path: '',
+                loadComponent: () =>
+                  import('./features/admin/pacientes/pages/list/pacientes').then(
+                    (m) => m.Pacientes,
+                  ),
+              }),
+
+              route({
+                path: 'edit/:id',
+                loadComponent: () =>
+                  import('./features/admin/pacientes/pages/edit/pacientes-edit').then(
+                    (m) => m.PacientesEdit,
+                  ),
+                data: {
+                  topbar: {
+                    dynamicMode: true,
+                    pageTitle: 'Editar paciente',
+                  },
+                },
+              }),
+            ],
           }),
         ],
         data: { roles: ['ADMIN'] },

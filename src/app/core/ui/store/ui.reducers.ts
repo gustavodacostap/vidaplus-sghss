@@ -38,4 +38,20 @@ export const uiReducer = createReducer(
       notifications: [],
     }),
   ),
+
+  on(
+    UIActions.showSnackbar,
+    (state, { message, logMessage }): UIState => ({
+      ...state,
+      snackbar: { message, logMessage },
+    }),
+  ),
+
+  on(
+    UIActions.clearSnackbar,
+    (state): UIState => ({
+      ...state,
+      snackbar: null,
+    }),
+  ),
 );

@@ -5,17 +5,18 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
-import { loadPacientes } from '../store/pacientes.actions';
-import { selectPacientes } from '../store/pacientes.selectors';
+import { loadPacientes } from '../../store/list/pacientes.actions';
+import { selectPacientes } from '../../store/list/pacientes.selectors';
 import { combineLatest, Observable, startWith, Subject, takeUntil } from 'rxjs';
-import { PacienteListItem } from '../models/PacienteListItem.model';
+import { PacienteListItem } from '../../models/PacienteListItem.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ViewPacienteDialog } from '../dialogs/view-paciente-dialog/view-paciente-dialog';
+import { ViewPacienteDialog } from '../../dialogs/view-paciente-dialog/view-paciente-dialog';
+import { Router } from '@angular/router';
 
 type PacienteColumn = keyof Pick<PacienteListItem, 'nome' | 'cpf' | 'dataNascimento' | 'status'>;
 
@@ -40,6 +41,7 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
   private store = inject(Store);
   private destroyed$ = new Subject<void>();
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   displayedColumns: PacienteColumn[] = ['nome', 'cpf', 'dataNascimento', 'status'];
 
@@ -113,8 +115,8 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
     });
   }
 
-  editPaciente(paciente: PacienteListItem) {
-    console.log('Implementar editPaciente' + paciente);
+  editPaciente(pacienteId: number) {
+    this.router.navigate([`admin/pacientes/edit/${pacienteId}`]);
   }
 
   formatCell(column: keyof PacienteListItem, row: PacienteListItem): string {

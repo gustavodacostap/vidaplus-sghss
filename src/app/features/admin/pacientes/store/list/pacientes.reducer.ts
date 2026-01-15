@@ -9,6 +9,11 @@ import {
   loadPacientesSuccess,
 } from './pacientes.actions';
 import { PacientesState } from './pacientes.state';
+import {
+  errorStatus,
+  loadingStatus,
+  successStatus,
+} from '../../../../../shared/helpers/async-status.helper';
 
 export const pacientesReducer = createReducer(
   initialPacientesState,
@@ -17,7 +22,10 @@ export const pacientesReducer = createReducer(
     loadPacientes,
     (state): PacientesState => ({
       ...state,
-      loading: true,
+      list: {
+        ...state.list,
+        status: loadingStatus(),
+      },
     }),
   ),
 
@@ -25,24 +33,31 @@ export const pacientesReducer = createReducer(
     loadPacientesSuccess,
     (state, { pacientes }): PacientesState => ({
       ...state,
-      pacientes,
-      loading: false,
+      list: {
+        pacientes,
+        status: successStatus(),
+      },
     }),
   ),
 
   on(
     loadPacientesFailure,
-    (state, { error }): PacientesState => ({
+    (state): PacientesState => ({
       ...state,
-      loading: false,
-      error,
+      list: {
+        ...state.list,
+        status: errorStatus(),
+      },
     }),
   ),
   on(
     loadPacienteById,
     (state): PacientesState => ({
       ...state,
-      loading: true,
+      selected: {
+        ...state.selected,
+        status: loadingStatus(),
+      },
     }),
   ),
 
@@ -50,17 +65,21 @@ export const pacientesReducer = createReducer(
     loadPacienteByIdSuccess,
     (state, { paciente }): PacientesState => ({
       ...state,
-      paciente,
-      loading: false,
+      selected: {
+        paciente,
+        status: successStatus(),
+      },
     }),
   ),
 
   on(
     loadPacienteByIdFailure,
-    (state, { error }): PacientesState => ({
+    (state): PacientesState => ({
       ...state,
-      loading: false,
-      error,
+      selected: {
+        ...state.selected,
+        status: errorStatus(),
+      },
     }),
   ),
 );

@@ -10,3 +10,5 @@ export const selectUnreadNotificationsCount = createSelector(
   selectNotifications,
   (notifications) => notifications.filter((n) => !n.read).length,
 );
+
+export const selectSnackbar = createSelector(selectUIState, (state) => state.snackbar);
