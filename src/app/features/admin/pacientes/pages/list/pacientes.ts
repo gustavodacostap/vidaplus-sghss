@@ -6,7 +6,11 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
 import { loadPacientes } from '../../store/list/pacientes.actions';
-import { selectPacientes } from '../../store/list/pacientes.selectors';
+import {
+  selectPacientes,
+  selectPacientesError,
+  selectPacientesLoading,
+} from '../../store/list/pacientes.selectors';
 import { combineLatest, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { PacienteListItem } from '../../models/PacienteListItem.model';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +21,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewPacienteDialog } from '../../dialogs/view-paciente-dialog/view-paciente-dialog';
 import { Router } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 type PacienteColumn = keyof Pick<PacienteListItem, 'nome' | 'cpf' | 'dataNascimento' | 'status'>;
 
@@ -33,6 +38,7 @@ type PacienteColumn = keyof Pick<PacienteListItem, 'nome' | 'cpf' | 'dataNascime
     MatAutocompleteModule,
     CommonModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './pacientes.html',
   styleUrl: './pacientes.scss',
@@ -42,6 +48,9 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
   private destroyed$ = new Subject<void>();
   private dialog = inject(MatDialog);
   private router = inject(Router);
+
+  loading = this.store.selectSignal(selectPacientesLoading);
+  error = this.store.selectSignal(selectPacientesError);
 
   displayedColumns: PacienteColumn[] = ['nome', 'cpf', 'dataNascimento', 'status'];
 
@@ -60,7 +69,6 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
     status: (value: boolean) => (value ? 'Ativo' : 'Inativo'),
   };
 
-  unidades = ['Alphaville', 'Barueri', 'Osasco'];
   filteredUnidades$!: Observable<string[]>;
 
   nomeCtrl = new FormControl('');
