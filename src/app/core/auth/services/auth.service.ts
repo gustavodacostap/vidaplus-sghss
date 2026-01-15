@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { StorageService } from '../../storage/services/storage.service';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, of, tap, throwError } from 'rxjs';
 import { User } from '../models/User.model';
 import * as CryptoJS from 'crypto-js';
 import { SessionService } from './session.service';
@@ -27,7 +27,7 @@ export class AuthService {
     const user = users.find((u) => u.email === email && u.passwordHash === passwordHash);
 
     if (!user) {
-      throw new Error('Credenciais inválidas');
+      return throwError(() => new Error('Credenciais inválidas'));
     }
 
     const redirectMap = {
