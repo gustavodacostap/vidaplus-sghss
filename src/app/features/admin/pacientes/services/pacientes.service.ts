@@ -3,6 +3,7 @@ import { defer, Observable, of, throwError } from 'rxjs';
 import { PacienteListItem } from '../models/PacienteListItem.model';
 import { StorageService } from '../../../../core/storage/services/storage.service';
 import { Paciente } from '../models/Paciente.model';
+import { UpdatePacienteDTO } from '../dto/UpdatePaciente.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -52,6 +53,27 @@ export class PacientesService {
       }
 
       return of(paciente);
+    });
+  }
+
+  updatePaciente(id: number, dto: UpdatePacienteDTO): Observable<void> {
+    return defer(() => {
+      const pacientes = this.getStoredPacientes();
+
+      const pacienteAtual = pacientes.find((p) => p.id === id);
+
+      if (!pacienteAtual) {
+        return throwError(() => new Error(`Paciente com id ${id} não encontrado`));
+      }
+
+      const pacienteAtualizado: Paciente = {
+        ...pacienteAtual, // mantém id e userId
+        ...dto, // atualiza os demais campos
+      };
+
+      this.storage.update<Paciente>(this.STORAGE_KEY, pacienteAtualizado);
+
+      return of(void 0);
     });
   }
 }

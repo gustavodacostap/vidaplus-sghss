@@ -7,6 +7,7 @@ import { provideEffects } from '@ngrx/effects';
 import { effects, reducers } from './core/store/index.store';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { PaginatorPtBrIntl } from './shared/providers/paginator-ptbr-intl';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,5 +20,6 @@ export const appConfig: ApplicationConfig = {
       maxAge: 25,
       logOnly: !isDevMode(),
     }),
+    provideEnvironmentNgxMask(),
   ],
 };

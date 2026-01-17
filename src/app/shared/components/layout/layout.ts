@@ -16,7 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { TopbarService } from '../../../core/ui/services/topbar.service';
 import { Session } from '../../../core/auth/models/Session.model';
-import { NAV_ITEMS } from './layout.config';
+import { ContentPadding, NAV_ITEMS } from './layout.config';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
@@ -30,6 +31,7 @@ import { NAV_ITEMS } from './layout.config';
     MatButtonModule,
     RouterLink,
     RouterLinkActive,
+    CommonModule,
   ],
   templateUrl: './layout.html',
   styleUrl: './layout.scss',
@@ -46,16 +48,22 @@ export class Layout implements OnInit, OnDestroy {
 
   sessionData = signal<Session | null>(this.session.getSession());
 
+  contentPadding = signal<ContentPadding>('default');
+
   ngOnInit() {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
         const route = this.getDeepestRoute(this.route);
+
         const config = route.snapshot.data['topbar'];
         if (config) {
           this.topbarService.set(config);
         }
+
+        const layoutConfig = route.snapshot.data['layout'];
+        this.contentPadding.set(layoutConfig?.contentPadding ?? 'default');
       });
   }
 

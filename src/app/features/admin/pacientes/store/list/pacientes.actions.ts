@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { PacienteListItem } from '../../models/PacienteListItem.model';
 import { Paciente } from '../../models/Paciente.model';
+import { UpdatePacienteDTO } from '../../dto/UpdatePaciente.dto';
 
 export const loadPacientes = createAction('[Pacientes] Load');
 
@@ -19,3 +20,12 @@ export const loadPacienteByIdSuccess = createAction(
 );
 
 export const loadPacienteByIdFailure = createAction('[Paciente Detail] Load Failure');
+
+export const updatePaciente = createAction(
+  '[Paciente Edit] Update Paciente',
+  props<{ id: number; dto: UpdatePacienteDTO }>(),
+);
+
+export const updatePacienteSuccess = createAction('[Paciente Edit] Update Paciente Success');
+
+export const updatePacienteFailure = createAction('[Paciente Edit] Update Paciente Failure');

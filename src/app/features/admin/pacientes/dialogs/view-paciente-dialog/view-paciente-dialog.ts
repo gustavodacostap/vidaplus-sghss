@@ -13,7 +13,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { CpfPipe } from '../../../../../shared/pipes/cpf.pipe';
 import { CelularPipe } from '../../../../../shared/pipes/celular.pipe';
 import { MatDividerModule } from '@angular/material/divider';
-import { ListAndPipe } from '../../../../../shared/pipes/list-and.pipe';
 import {
   selectPaciente,
   selectPacienteError,
@@ -37,7 +36,6 @@ export interface ViewPacienteDialogData {
     CpfPipe,
     CelularPipe,
     MatDividerModule,
-    ListAndPipe,
     MatIconModule,
     MatProgressSpinnerModule,
   ],

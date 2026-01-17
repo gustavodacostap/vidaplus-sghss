@@ -22,6 +22,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ViewPacienteDialog } from '../../dialogs/view-paciente-dialog/view-paciente-dialog';
 import { Router } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { USDateToBR } from '../../../../../shared/utils/date.utils';
+import { NgxMaskDirective } from 'ngx-mask';
+import { formatCpf } from '../../../../../shared/utils/field-formatters.util';
 
 type PacienteColumn = keyof Pick<PacienteListItem, 'nome' | 'cpf' | 'dataNascimento' | 'status'>;
 
@@ -39,6 +42,7 @@ type PacienteColumn = keyof Pick<PacienteListItem, 'nome' | 'cpf' | 'dataNascime
     CommonModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    NgxMaskDirective,
   ],
   templateUrl: './pacientes.html',
   styleUrl: './pacientes.scss',
@@ -67,6 +71,8 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
     Record<keyof PacienteListItem, (value: any, row: PacienteListItem) => string>
   > = {
     status: (value: boolean) => (value ? 'Ativo' : 'Inativo'),
+    dataNascimento: (value: string) => USDateToBR(value),
+    cpf: (value: string) => formatCpf(value),
   };
 
   filteredUnidades$!: Observable<string[]>;

@@ -13,7 +13,7 @@ export class StorageService {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
-  add<T extends { id?: string }>(key: string, item: T): T {
+  add<T extends { id?: number }>(key: string, item: T): T {
     const data: T[] = this.get<T[]>(key) || [];
 
     const newItem = {
@@ -28,7 +28,7 @@ export class StorageService {
   }
 
   // Atualiza um item no array
-  update<T extends { id: string }>(key: string, item: T): T {
+  update<T extends { id: number }>(key: string, item: T): T {
     const data: T[] = this.get<T[]>(key) || [];
     const index = data.findIndex((i) => i.id === item.id);
     if (index >= 0) {
@@ -45,7 +45,7 @@ export class StorageService {
     this.set(key, filtered);
   }
 
-  private generateId(): string {
-    return crypto.randomUUID();
+  private generateId(): number {
+    return Date.now() + Math.floor(Math.random() * 1000);
   }
 }

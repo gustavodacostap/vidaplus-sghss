@@ -17,7 +17,7 @@ export interface Paciente {
   peso: number; // ex: 70.5 (kg)
   altura: number; // ex: 1.75 (metros)
 
-  alergias: string[];
+  alergias: string | null;
 
   status: boolean;
 }

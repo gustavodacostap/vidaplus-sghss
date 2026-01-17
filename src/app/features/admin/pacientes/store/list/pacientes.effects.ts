@@ -9,6 +9,9 @@ import {
   loadPacientes,
   loadPacientesFailure,
   loadPacientesSuccess,
+  updatePaciente,
+  updatePacienteFailure,
+  updatePacienteSuccess,
 } from './pacientes.actions';
 import { showSnackbar } from '../../../../../core/ui/store/ui.actions';
 
@@ -48,6 +51,31 @@ export class PacientesEffects {
               loadPacienteByIdFailure(),
               showSnackbar({
                 message: 'Paciente não encontrado',
+                logMessage: err.toString(),
+              }),
+            ),
+          ),
+        ),
+      ),
+    );
+  });
+
+  updatePaciente$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(updatePaciente),
+      switchMap(({ id, dto }) =>
+        this.service.updatePaciente(id, dto).pipe(
+          switchMap(() => [
+            updatePacienteSuccess(),
+            showSnackbar({
+              message: 'Paciente atualizado com sucesso',
+            }),
+          ]),
+          catchError((err) =>
+            of(
+              updatePacienteFailure(),
+              showSnackbar({
+                message: 'Erro ao atualizar paciente',
                 logMessage: err.toString(),
               }),
             ),

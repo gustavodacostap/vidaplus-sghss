@@ -98,7 +98,7 @@ export class AuthService {
         tipoSanguineo: 'O+',
         peso: 72.5,
         altura: 1.78,
-        alergias: ['Dipirona'],
+        alergias: 'Dipirona',
         status: true,
       },
       {
@@ -113,7 +113,7 @@ export class AuthService {
         tipoSanguineo: 'A-',
         peso: 65.2,
         altura: 1.65,
-        alergias: [],
+        alergias: '',
         status: false,
       },
       {
@@ -128,7 +128,7 @@ export class AuthService {
         tipoSanguineo: 'B+',
         peso: 80.0,
         altura: 1.82,
-        alergias: ['Lactose', 'Glúten'],
+        alergias: 'Lactose, glúten',
         status: true,
       },
     ];

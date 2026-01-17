@@ -17,6 +17,7 @@ import { TopbarService } from '../../../../../core/ui/services/topbar.service';
 import { MatButtonModule } from '@angular/material/button';
 import { map, Subject, takeUntil } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-topbar',
@@ -29,6 +30,7 @@ export class Topbar implements OnInit, OnDestroy {
 
   private destroyed$ = new Subject<void>();
   private breakpointObserver = inject(BreakpointObserver);
+  private router = inject(Router);
 
   @Output() menuToggle = new EventEmitter<void>();
 
@@ -60,6 +62,16 @@ export class Topbar implements OnInit, OnDestroy {
       .subscribe((isMobile) => {
         this.isMobile.set(isMobile);
       });
+  }
+
+  navigateBack() {
+    const link = this.config()?.returnLink;
+
+    if (link) {
+      this.router.navigateByUrl(link);
+    } else {
+      console.error('returnLink não informado no objeto data da rota');
+    }
   }
 
   ngOnDestroy() {

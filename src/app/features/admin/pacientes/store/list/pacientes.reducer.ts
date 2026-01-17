@@ -7,6 +7,9 @@ import {
   loadPacientes,
   loadPacientesFailure,
   loadPacientesSuccess,
+  updatePaciente,
+  updatePacienteFailure,
+  updatePacienteSuccess,
 } from './pacientes.actions';
 import { PacientesState } from './pacientes.state';
 import {
@@ -78,6 +81,35 @@ export const pacientesReducer = createReducer(
       ...state,
       selected: {
         ...state.selected,
+        status: errorStatus(),
+      },
+    }),
+  ),
+  on(
+    updatePaciente,
+    (state): PacientesState => ({
+      ...state,
+      update: {
+        status: loadingStatus(),
+      },
+    }),
+  ),
+
+  on(
+    updatePacienteSuccess,
+    (state): PacientesState => ({
+      ...state,
+      update: {
+        status: successStatus(),
+      },
+    }),
+  ),
+
+  on(
+    updatePacienteFailure,
+    (state): PacientesState => ({
+      ...state,
+      update: {
         status: errorStatus(),
       },
     }),

@@ -19,7 +19,9 @@ export class UIEffects {
             data: message,
           });
 
-          console.error(logMessage);
+          if (logMessage) {
+            console.error(logMessage);
+          }
         }),
       );
     },

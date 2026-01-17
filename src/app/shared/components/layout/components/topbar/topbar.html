@@ -11,7 +11,12 @@
       </button>
       <app-logo></app-logo>
     } @else {
-      <button matIconButton aria-label="Botão voltar" class="flex items-center cursor-pointer">
+      <button
+        matIconButton
+        aria-label="Botão voltar"
+        (click)="navigateBack()"
+        class="flex items-center cursor-pointer"
+      >
         <mat-icon>arrow_back</mat-icon>
       </button>
       <span>{{ config()?.pageTitle }}</span>

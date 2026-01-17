@@ -21,6 +21,7 @@
           <input
             matInput
             type="search"
+            mask="000.000.000-00"
             [formControl]="cpfCtrl"
             placeholder="Digite o CPF"
             aria-label="Filtrar pelo CPF"
@@ -59,7 +60,7 @@
                 (click)="viewPaciente(paciente.id)"
                 class="icon"
               >
-                <mat-icon>visibility</mat-icon>
+                <mat-icon class="action-icons">visibility</mat-icon>
               </button>
 
               <button
@@ -69,7 +70,7 @@
                 (click)="editPaciente(paciente.id)"
                 class="icon"
               >
-                <mat-icon>edit</mat-icon>
+                <mat-icon class="action-icons">edit</mat-icon>
               </button>
             </div>
           </td>

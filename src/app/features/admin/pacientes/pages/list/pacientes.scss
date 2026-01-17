@@ -8,6 +8,14 @@
   );
 }
 
+.action-icons {
+  @include mat.icon-overrides(
+    (
+      color: var(--mat-sys-on-primary-container),
+    )
+  );
+}
+
 .actions {
   display: flex;
   flex-wrap: nowrap;

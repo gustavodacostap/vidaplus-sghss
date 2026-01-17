@@ -1,5 +1,11 @@
 import { UserRole } from '../../../core/auth/models/User.model';
 
+export type ContentPadding = 'default' | 'onlyY';
+
+export interface LayoutConfig {
+  contentPadding?: ContentPadding;
+}
+
 export interface NavItem {
   label: string;
   icon: string;

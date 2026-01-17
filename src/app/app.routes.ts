@@ -41,6 +41,10 @@ export const routes: Routes = [
                   topbar: {
                     dynamicMode: true,
                     pageTitle: 'Editar paciente',
+                    returnLink: 'admin/pacientes',
+                  },
+                  layout: {
+                    contentPadding: 'onlyY',
                   },
                 },
               }),

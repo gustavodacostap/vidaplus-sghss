@@ -7,9 +7,11 @@ export interface PacientesState {
     pacientes: PacienteListItem[];
     status: AsyncStatus;
   };
-
   selected: {
     paciente: Paciente | null;
+    status: AsyncStatus;
+  };
+  update: {
     status: AsyncStatus;
   };
 }
@@ -24,6 +26,12 @@ export const initialPacientesState: PacientesState = {
   },
   selected: {
     paciente: null,
+    status: {
+      loading: false,
+      error: false,
+    },
+  },
+  update: {
     status: {
       loading: false,
       error: false,

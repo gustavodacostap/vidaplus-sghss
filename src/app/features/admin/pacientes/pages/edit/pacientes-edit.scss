@@ -1,0 +1,8 @@
+::ng-deep .mat-mdc-card-content {
+  display: flex !important;
+}
+
+:host main {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
