@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { PacientesService } from '../../services/pacientes.service';
+import { PacientesService } from '../services/pacientes.service';
 import { catchError, map, of, switchMap } from 'rxjs';
 import {
   loadPacienteById,
@@ -13,7 +13,7 @@ import {
   updatePacienteFailure,
   updatePacienteSuccess,
 } from './pacientes.actions';
-import { showSnackbar } from '../../../../../core/ui/store/ui.actions';
+import { showSnackbar } from '../../../../core/ui/store/ui.actions';
 
 @Injectable()
 export class PacientesEffects {
@@ -75,7 +75,7 @@ export class PacientesEffects {
             of(
               updatePacienteFailure(),
               showSnackbar({
-                message: 'Erro ao atualizar paciente',
+                message: 'Erro ao atualizar paciente. Tente novamente.',
                 logMessage: err.toString(),
               }),
             ),

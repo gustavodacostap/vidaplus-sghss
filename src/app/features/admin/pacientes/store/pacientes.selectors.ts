@@ -28,3 +28,13 @@ export const selectPacienteError = createSelector(
   selectPacientesState,
   (s) => s.selected.status.error,
 );
+
+export const selectEditPacienteLoading = createSelector(
+  selectPacientesState,
+  (s) => s.update.status.loading,
+);
+
+export const selectEditPacienteError = createSelector(
+  selectPacientesState,
+  (s) => s.update.status.error,
+);

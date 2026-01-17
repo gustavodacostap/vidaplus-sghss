@@ -5,12 +5,12 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
-import { loadPacientes } from '../../store/list/pacientes.actions';
+import { loadPacientes } from '../../store/pacientes.actions';
 import {
   selectPacientes,
   selectPacientesError,
   selectPacientesLoading,
-} from '../../store/list/pacientes.selectors';
+} from '../../store/pacientes.selectors';
 import { combineLatest, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { PacienteListItem } from '../../models/PacienteListItem.model';
 import { MatButtonModule } from '@angular/material/button';

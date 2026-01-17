@@ -20,3 +20,26 @@
   display: flex;
   flex-wrap: nowrap;
 }
+
+.scrollbar-custom {
+  padding-bottom: 12px;
+
+  &::-webkit-scrollbar {
+    height: 10px; // altura
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--mat-sys-surface-container-highest);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--mat-sys-primary);
+    border-radius: 10px;
+    background-clip: content-box;
+
+    &:hover {
+      background-color: var(--mat-sys-on-primary-container);
+    }
+  }
+}

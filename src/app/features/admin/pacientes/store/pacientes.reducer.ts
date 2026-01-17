@@ -16,7 +16,7 @@ import {
   errorStatus,
   loadingStatus,
   successStatus,
-} from '../../../../../shared/helpers/async-status.helper';
+} from '../../../../shared/helpers/async-status.helper';
 
 export const pacientesReducer = createReducer(
   initialPacientesState,

@@ -4,8 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Paciente, TipoSanguineo } from '../../models/Paciente.model';
 import { Store } from '@ngrx/store';
-import { selectPaciente } from '../../store/list/pacientes.selectors';
-import { loadPacienteById, updatePaciente } from '../../store/list/pacientes.actions';
+import { selectPaciente } from '../../store/pacientes.selectors';
+import { loadPacienteById, updatePaciente } from '../../store/pacientes.actions';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatStepperModule, StepperOrientation } from '@angular/material/stepper';
 import { MatInputModule } from '@angular/material/input';
@@ -135,5 +135,6 @@ export class PacientesEdit implements OnInit {
     };
 
     this.store.dispatch(updatePaciente({ id: this.pacienteId, dto: dto }));
+    this.backToPacientes();
   }
 }

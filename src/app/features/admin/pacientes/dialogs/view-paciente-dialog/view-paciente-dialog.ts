@@ -8,7 +8,7 @@ import {
 } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Paciente } from '../../models/Paciente.model';
-import { loadPacienteById } from '../../store/list/pacientes.actions';
+import { loadPacienteById } from '../../store/pacientes.actions';
 import { MatButtonModule } from '@angular/material/button';
 import { CpfPipe } from '../../../../../shared/pipes/cpf.pipe';
 import { CelularPipe } from '../../../../../shared/pipes/celular.pipe';
@@ -17,7 +17,7 @@ import {
   selectPaciente,
   selectPacienteError,
   selectPacienteLoading,
-} from '../../store/list/pacientes.selectors';
+} from '../../store/pacientes.selectors';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

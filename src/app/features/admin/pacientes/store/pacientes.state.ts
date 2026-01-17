@@ -1,6 +1,6 @@
-import { AsyncStatus } from '../../../../../shared/interfaces/AsyncStatus.model';
-import { Paciente } from '../../models/Paciente.model';
-import { PacienteListItem } from '../../models/PacienteListItem.model';
+import { AsyncStatus } from '../../../../shared/interfaces/AsyncStatus.model';
+import { Paciente } from '../models/Paciente.model';
+import { PacienteListItem } from '../models/PacienteListItem.model';
 
 export interface PacientesState {
   list: {

@@ -32,7 +32,7 @@
   </div>
   <!-- TABELA -->
   <section aria-label="Lista de pacientes">
-    <div class="table-container" role="region" tabindex="0">
+    <div class="overflow-x-auto scrollbar-custom" role="region" tabindex="0">
       <table mat-table [dataSource]="dataSource" aria-describedby="page-title" class="table">
         <!-- COLUNAS SIMPLES -->
         @for (column of displayedColumns; track column) {
@@ -102,6 +102,7 @@
     <mat-paginator
       [pageSizeOptions]="[5, 10, 20]"
       showFirstLastButtons
+      class="mt-2"
       aria-label="Paginação da lista de pacientes"
     />
   </section>

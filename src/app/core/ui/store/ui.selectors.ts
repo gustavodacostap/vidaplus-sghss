@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UIState } from './ui.state';
+import { selectEditPacienteLoading } from '../../../features/admin/pacientes/store/pacientes.selectors';
 
 export const selectUIState = createFeatureSelector<UIState>('ui');
 
@@ -12,3 +13,7 @@ export const selectUnreadNotificationsCount = createSelector(
 );
 
 export const selectSnackbar = createSelector(selectUIState, (state) => state.snackbar);
+
+export const selectGlobalLoading = createSelector(selectEditPacienteLoading, (...loadings) =>
+  loadings.some(Boolean),
+);
