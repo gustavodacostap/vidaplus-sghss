@@ -31,7 +31,6 @@ export class PacientesService {
         nome: p.nome,
         cpf: p.cpf,
         dataNascimento: p.dataNascimento,
-        status: p.status,
       }));
 
       if (!listItems) {

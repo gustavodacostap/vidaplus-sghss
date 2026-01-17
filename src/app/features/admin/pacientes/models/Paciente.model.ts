@@ -18,6 +18,4 @@ export interface Paciente {
   altura: number; // ex: 1.75 (metros)
 
   alergias: string | null;
-
-  status: boolean;
 }

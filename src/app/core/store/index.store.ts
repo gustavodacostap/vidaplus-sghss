@@ -8,17 +8,22 @@ import { PacientesState } from '../../features/admin/pacientes/store/pacientes.s
 import { pacientesReducer } from '../../features/admin/pacientes/store/pacientes.reducer';
 import { PacientesEffects } from '../../features/admin/pacientes/store/pacientes.effects';
 import { UIEffects } from '../ui/store/ui.effects';
+import { ProfissionaisEffects } from '../../features/admin/profissionais/store/profissionais.effects';
+import { profissionaisReducer } from '../../features/admin/profissionais/store/profissionais.reducer';
+import { ProfissionaisState } from '../../features/admin/profissionais/store/profissionais.state';
 
 export interface AppState {
   auth: AuthState;
   ui: UIState;
   pacientes: PacientesState;
+  profissionais: ProfissionaisState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   ui: uiReducer,
   pacientes: pacientesReducer,
+  profissionais: profissionaisReducer,
 };
 
-export const effects = [AuthEffects, PacientesEffects, UIEffects];
+export const effects = [AuthEffects, PacientesEffects, UIEffects, ProfissionaisEffects];

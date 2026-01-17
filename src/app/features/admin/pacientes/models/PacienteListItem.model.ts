@@ -3,5 +3,4 @@ export interface PacienteListItem {
   nome: string;
   cpf: string;
   dataNascimento: string;
-  status: boolean;
 }

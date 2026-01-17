@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
-      trace: !isDevMode(),
+      trace: isDevMode(),
     }),
     provideEnvironmentNgxMask(),
   ],

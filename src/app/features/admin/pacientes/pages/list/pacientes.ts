@@ -11,11 +11,10 @@ import {
   selectPacientesError,
   selectPacientesLoading,
 } from '../../store/pacientes.selectors';
-import { combineLatest, Observable, startWith, Subject, takeUntil } from 'rxjs';
+import { combineLatest, startWith, Subject, takeUntil } from 'rxjs';
 import { PacienteListItem } from '../../models/PacienteListItem.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,7 +25,7 @@ import { USDateToBR } from '../../../../../shared/utils/date.utils';
 import { NgxMaskDirective } from 'ngx-mask';
 import { formatCpf } from '../../../../../shared/utils/field-formatters.util';
 
-type PacienteColumn = keyof Pick<PacienteListItem, 'nome' | 'cpf' | 'dataNascimento' | 'status'>;
+type PacienteColumn = keyof Pick<PacienteListItem, 'nome' | 'cpf' | 'dataNascimento'>;
 
 @Component({
   selector: 'app-pacientes',
@@ -38,7 +37,6 @@ type PacienteColumn = keyof Pick<PacienteListItem, 'nome' | 'cpf' | 'dataNascime
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
-    MatAutocompleteModule,
     CommonModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
@@ -56,7 +54,7 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
   loading = this.store.selectSignal(selectPacientesLoading);
   error = this.store.selectSignal(selectPacientesError);
 
-  displayedColumns: PacienteColumn[] = ['nome', 'cpf', 'dataNascimento', 'status'];
+  displayedColumns: PacienteColumn[] = ['nome', 'cpf', 'dataNascimento'];
 
   allColumns = [...this.displayedColumns, 'actions'];
 
@@ -70,12 +68,9 @@ export class Pacientes implements AfterViewInit, OnInit, OnDestroy {
   columnFormatters: Partial<
     Record<keyof PacienteListItem, (value: any, row: PacienteListItem) => string>
   > = {
-    status: (value: boolean) => (value ? 'Ativo' : 'Inativo'),
     dataNascimento: (value: string) => USDateToBR(value),
     cpf: (value: string) => formatCpf(value),
   };
-
-  filteredUnidades$!: Observable<string[]>;
 
   nomeCtrl = new FormControl('');
   cpfCtrl = new FormControl('', [Validators.maxLength(14)]);

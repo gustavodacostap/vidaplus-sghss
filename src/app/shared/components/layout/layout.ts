@@ -87,6 +87,10 @@ export class Layout implements OnInit, OnDestroy {
     return NAV_ITEMS[role];
   });
 
+  onNavItemClick() {
+    this.topbarService.close('sidenav');
+  }
+
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();

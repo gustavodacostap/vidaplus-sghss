@@ -50,6 +50,18 @@ export const routes: Routes = [
               }),
             ],
           }),
+          route({
+            path: 'profissionais',
+            children: [
+              route({
+                path: '',
+                loadComponent: () =>
+                  import('./features/admin/profissionais/pages/list/profissionais').then(
+                    (m) => m.Profissionais,
+                  ),
+              }),
+            ],
+          }),
         ],
         data: { roles: ['ADMIN'] },
       }),

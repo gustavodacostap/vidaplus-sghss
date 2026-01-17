@@ -105,7 +105,6 @@ export class PacientesEdit implements OnInit {
         peso: paciente.peso,
         altura: paciente.altura,
         alergias: paciente.alergias ?? '',
-        status: paciente.status,
       });
     });
   }
