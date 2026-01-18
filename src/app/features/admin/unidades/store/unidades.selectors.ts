@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UnidadesState } from './unidades.state';
 import { Unidade } from '../models/Unidade.model';
+import { UnidadeOption } from '../../profissionais/pages/list/profissionais';
 
 export const selectUnidadesState = createFeatureSelector<UnidadesState>('unidades');
 
@@ -19,4 +20,8 @@ export const selectUnidadesEntities = createSelector(selectUnidades, (unidades) 
     acc[unidade.id] = unidade;
     return acc;
   }, {}),
+);
+
+export const selectNomeUnidades = createSelector(selectUnidades, (unidades): string[] =>
+  unidades.map((u) => u.nome),
 );

@@ -5,15 +5,15 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { combineLatest, map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProfissionalListItem } from '../../models/ProfissionalListItem.model';
 import {
   selectProfissionaisComUnidade,
@@ -21,8 +21,15 @@ import {
   selectProfissionaisLoading,
 } from '../../store/profissionais.selectors';
 import { enterProfissionaisPage } from '../../store/profissionais.actions';
+import { selectNomeUnidades } from '../../../unidades/store/unidades.selectors';
+import { ViewProfissionalDialog } from '../../dialogs/view-profissional-dialog/view-profissional-dialog';
 
 type ProfissionalColumn = 'nome' | 'crm' | 'especialidade' | 'unidadeNome';
+
+export interface UnidadeOption {
+  id: number;
+  nome: string;
+}
 
 @Component({
   selector: 'app-profissionais',
@@ -32,7 +39,7 @@ type ProfissionalColumn = 'nome' | 'crm' | 'especialidade' | 'unidadeNome';
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,
-    MatSelectModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatTooltipModule,
     CommonModule,
@@ -68,10 +75,11 @@ export class Profissionais implements OnInit, AfterViewInit, OnDestroy {
     crm: (value: string, row) => `CRM/${row.UFcrm} ${value}`,
   };
 
-  filteredUnidades$!: Observable<string[]>;
-
   nomeCtrl = new FormControl('');
-  cpfCtrl = new FormControl('', [Validators.maxLength(14)]);
+  unidadeCtrl = new FormControl<string>('', { nonNullable: true });
+
+  filteredUnidades!: Observable<string[]>;
+  unidades = this.store.select(selectNomeUnidades);
 
   dataSource = new MatTableDataSource<ProfissionalListItem>();
 
@@ -84,33 +92,40 @@ export class Profissionais implements OnInit, AfterViewInit, OnDestroy {
       .select(selectProfissionaisComUnidade)
       .pipe(takeUntil(this.destroyed$))
       .subscribe((profissionais) => {
-        console.log('Profissionais do store:', profissionais);
         this.dataSource.data = profissionais;
-        this.dataSource.filter = '';
       });
 
-    // this.dataSource.filterPredicate = (data, filter) => {
-    //   const { nome, cpf } = JSON.parse(filter);
+    this.filteredUnidades = combineLatest([
+      this.unidadeCtrl.valueChanges.pipe(startWith('')),
+      this.unidades,
+    ]).pipe(
+      map(([value, unidades]) =>
+        unidades.filter((u) => u.toLowerCase().includes(value.toLowerCase())),
+      ),
+    );
 
-    //   return (
-    //     (!nome || data.nome.toLowerCase().includes(nome.toLowerCase())) &&
-    //     (!cpf || data.cpf.includes(cpf))
-    //   );
-    // };
+    this.dataSource.filterPredicate = (data, filter) => {
+      const { nome, unidadeNome } = JSON.parse(filter);
 
-    // combineLatest([
-    //   this.nomeCtrl.valueChanges.pipe(startWith('')),
-    //   this.cpfCtrl.valueChanges.pipe(startWith('')),
-    // ])
-    //   .pipe(takeUntil(this.destroyed$))
-    //   .subscribe(([nome, cpf]) => {
-    //     this.dataSource.filter = JSON.stringify({
-    //       nome: nome ?? '',
-    //       cpf: cpf ?? '',
-    //     });
+      return (
+        (!nome || data.nome.toLowerCase().includes(nome.toLowerCase())) &&
+        (!unidadeNome || data.unidadeNome.toLowerCase().includes(unidadeNome.toLowerCase()))
+      );
+    };
 
-    //     this.dataSource.paginator?.firstPage();
-    //   });
+    combineLatest([
+      this.nomeCtrl.valueChanges.pipe(startWith('')),
+      this.unidadeCtrl.valueChanges.pipe(startWith('')),
+    ])
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(([nome, unidadeNome]) => {
+        this.dataSource.filter = JSON.stringify({
+          nome: nome ?? '',
+          unidadeNome: unidadeNome ?? '',
+        });
+
+        this.dataSource.paginator?.firstPage();
+      });
   }
 
   ngAfterViewInit() {
@@ -118,11 +133,10 @@ export class Profissionais implements OnInit, AfterViewInit, OnDestroy {
   }
 
   viewProfissional(profissionalId: number): void {
-    // this.dialog.open(ViewPacienteDialog, {
-    // width: '600px',
-    // data: { profissionalId },
-    // });
-    // Implementar
+    this.dialog.open(ViewProfissionalDialog, {
+      width: '600px',
+      data: { profissionalId },
+    });
   }
 
   editProfissional(profissionalId: number) {
@@ -134,6 +148,10 @@ export class Profissionais implements OnInit, AfterViewInit, OnDestroy {
     const value = row[column as keyof ProfissionalListItem];
 
     return formatter ? formatter(value, row) : String(value ?? '');
+  }
+
+  displayUnidade(unidade?: UnidadeOption): string {
+    return unidade ? unidade.nome : '';
   }
 
   ngOnDestroy() {

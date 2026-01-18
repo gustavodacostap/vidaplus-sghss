@@ -17,14 +17,22 @@
         </mat-form-field>
 
         <!-- Tem que colocar um autocomplete aqui -->
-        <!-- <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Filtrar por unidade</mat-label>
-          <mat-select formControlName="tipoSanguineo">
-            @for (unidade of unidades; track unidade) {
-              <mat-option [value]="unidade">{{ unidade }}</mat-option>
+          <input
+            type="text"
+            placeholder="Digite a unidade"
+            aria-label="Filtrar por unidade"
+            matInput
+            [formControl]="unidadeCtrl"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            @for (option of filteredUnidades | async; track option) {
+              <mat-option [value]="option">{{ option }}</mat-option>
             }
-          </mat-select>
-        </mat-form-field> -->
+          </mat-autocomplete>
+        </mat-form-field>
       </form>
     </section>
   </div>

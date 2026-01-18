@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { ProfissionaisState } from './profissionais.state';
 import { selectUnidadesEntities } from '../../unidades/store/unidades.selectors';
+import { ProfissionalComUnidade } from '../models/ProfisisonalComUnidade.model';
 
 export const selectProfissionaisState = createFeatureSelector<ProfissionaisState>('profissionais');
 
@@ -55,4 +56,17 @@ export const selectProfissionaisComUnidade = createSelector(
       ...p,
       unidadeNome: unidades[p.unidadeId]?.nome ?? '—',
     })),
+);
+
+export const selectProfissionalComUnidade = createSelector(
+  selectProfissional,
+  selectUnidadesEntities,
+  (profissional, unidades): ProfissionalComUnidade | null => {
+    if (!profissional) return null;
+
+    return {
+      ...profissional,
+      unidadeNome: unidades[profissional.unidadeId]?.nome ?? '—',
+    };
+  },
 );

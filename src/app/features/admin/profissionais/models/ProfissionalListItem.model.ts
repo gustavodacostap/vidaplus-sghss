@@ -7,4 +7,5 @@ export interface ProfissionalListItem {
   UFcrm: UF;
   especialidade: string;
   unidadeId: number;
+  unidadeNome: string;
 }

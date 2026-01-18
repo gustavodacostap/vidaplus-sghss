@@ -30,6 +30,7 @@ export class ProfissionaisService {
         id: p.id,
         nome: p.nome,
         unidadeId: p.unidadeId,
+        unidadeNome: '',
         crm: p.crm,
         UFcrm: p.UFcrm,
         especialidade: p.especialidade,
