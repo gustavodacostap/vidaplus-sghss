@@ -3,6 +3,8 @@ import { Profissional } from '../models/Profissional.model';
 import { ProfissionalListItem } from '../models/ProfissionalListItem.model';
 import { UpdateProfissionalDTO } from '../dto/UpdateProfissional.dto';
 
+export const enterProfissionaisPage = createAction('[Profissionais Page] Enter');
+
 export const loadProfissionais = createAction('[Profissionais] Load');
 
 export const loadProfissionaisSuccess = createAction(

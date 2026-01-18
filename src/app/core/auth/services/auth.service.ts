@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Paciente } from '../../../features/admin/pacientes/models/Paciente.model';
 import { Profissionais } from '../../../features/admin/profissionais/pages/list/profissionais';
 import { Profissional } from '../../../features/admin/profissionais/models/Profissional.model';
+import { Unidade } from '../../../features/admin/unidades/models/Unidade.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -18,10 +19,12 @@ export class AuthService {
   private readonly USERS_KEY = 'users';
   private readonly PACIENTES_KEY = 'pacientes';
   private readonly PROFISSIONAIS_KEY = 'profissionais';
+  private readonly UNIDADES_KEY = 'unidades';
 
   constructor() {
     // this.storage.set(this.PACIENTES_KEY, this.createMockPatients());
-    this.createMockProfissionais();
+    // this.createMockProfissionais();
+    // this.createMockUnidades();
   }
 
   login(email: string, password: string): Observable<User> {
@@ -71,22 +74,33 @@ export class AuthService {
       }),
     );
   }
+  private createMockUnidades() {
+    const mockUnidades: Unidade[] = [
+      {
+        id: 1,
+        nome: 'Unidade Central',
+        telefone: '1133334444',
+        endereço: 'Rua das Flores, 120 - Centro, São Paulo - SP',
+        cep: '01001-000',
+      },
+      {
+        id: 2,
+        nome: 'Unidade Zona Norte',
+        telefone: '1122223333',
+        endereço: 'Av. Engenheiro Caetano Álvares, 850 - Santana, São Paulo - SP',
+        cep: '02546-000',
+      },
+      {
+        id: 3,
+        nome: 'Unidade Zona Sul',
+        telefone: '1144445555',
+        endereço: 'Av. Jabaquara, 2100 - Saúde, São Paulo - SP',
+        cep: '04046-000',
+      },
+    ];
 
-  // private seedUserIfNeeded() {
-  //   const users = this.storage.get<User[]>(this.USERS_KEY) ?? [];
-
-  //   if (users.some((u) => u.email === 'user@teste.com')) return;
-
-  //   const defaultUser: User = {
-  //     id: '1',
-  //     name: 'User Teste',
-  //     email: 'user@teste.com',
-  //     role: 'ADMIN',
-  //     passwordHash: this.hashPassword('12345678'),
-  //   };
-
-  //   this.storage.set(this.USERS_KEY, [...users, defaultUser]);
-  // }
+    this.storage.set(this.UNIDADES_KEY, mockUnidades);
+  }
 
   private createMockProfissionais() {
     const mockProfissionais: Profissional[] = [

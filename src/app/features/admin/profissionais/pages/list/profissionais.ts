@@ -5,7 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
-import { combineLatest, Observable, startWith, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
@@ -13,18 +13,16 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { USDateToBR } from '../../../../../shared/utils/date.utils';
-import { formatCpf } from '../../../../../shared/utils/field-formatters.util';
 import { MatSelectModule } from '@angular/material/select';
 import { ProfissionalListItem } from '../../models/ProfissionalListItem.model';
 import {
-  selectProfissionais,
+  selectProfissionaisComUnidade,
   selectProfissionaisError,
   selectProfissionaisLoading,
 } from '../../store/profissionais.selectors';
-import { loadProfissionais } from '../../store/profissionais.actions';
+import { enterProfissionaisPage } from '../../store/profissionais.actions';
 
-type ProfissionalColumn = 'nome' | 'crm' | 'especialidade' | 'unidade';
+type ProfissionalColumn = 'nome' | 'crm' | 'especialidade' | 'unidadeNome';
 
 @Component({
   selector: 'app-profissionais',
@@ -53,7 +51,7 @@ export class Profissionais implements OnInit, AfterViewInit, OnDestroy {
   loading = this.store.selectSignal(selectProfissionaisLoading);
   error = this.store.selectSignal(selectProfissionaisError);
 
-  displayedColumns: ProfissionalColumn[] = ['nome', 'crm', 'especialidade', 'unidade'];
+  displayedColumns: ProfissionalColumn[] = ['nome', 'crm', 'especialidade', 'unidadeNome'];
 
   allColumns = [...this.displayedColumns, 'actions'];
 
@@ -61,16 +59,14 @@ export class Profissionais implements OnInit, AfterViewInit, OnDestroy {
     nome: 'Nome',
     crm: 'CRM',
     especialidade: 'Especialidade',
-    unidade: 'Unidade',
+    unidadeNome: 'Unidade',
   };
 
-  // columnFormatters: Partial<
-  //   Record<keyof ProfissionalColumn, (value: any, row: ProfissionalListItem) => string>
-  // > = {
-  //   nome: (value: boolean) => (value ? 'Ativo' : 'Inativo'),
-  //   dataNascimento: (value: string) => USDateToBR(value),
-  //   cpf: (value: string) => formatCpf(value),
-  // };
+  columnFormatters: Partial<
+    Record<ProfissionalColumn, (value: any, row: ProfissionalListItem) => string>
+  > = {
+    crm: (value: string, row) => `CRM/${row.UFcrm} ${value}`,
+  };
 
   filteredUnidades$!: Observable<string[]>;
 
@@ -82,10 +78,10 @@ export class Profissionais implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit() {
-    this.store.dispatch(loadProfissionais());
+    this.store.dispatch(enterProfissionaisPage());
 
     this.store
-      .select(selectProfissionais)
+      .select(selectProfissionaisComUnidade)
       .pipe(takeUntil(this.destroyed$))
       .subscribe((profissionais) => {
         console.log('Profissionais do store:', profissionais);
@@ -133,12 +129,12 @@ export class Profissionais implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate([`admin/profissionais/edit/${profissionalId}`]);
   }
 
-  // formatCell(column: keyof ProfissionalColumn, row: ProfissionalListItem): string {
-  //   const formatter = this.columnFormatters[column];
-  //   const value = row[column];
+  formatCell(column: ProfissionalColumn, row: ProfissionalListItem): string {
+    const formatter = this.columnFormatters[column];
+    const value = row[column as keyof ProfissionalListItem];
 
-  //   return formatter ? formatter(value, row) : String(value ?? '');
-  // }
+    return formatter ? formatter(value, row) : String(value ?? '');
+  }
 
   ngOnDestroy() {
     this.destroyed$.next();

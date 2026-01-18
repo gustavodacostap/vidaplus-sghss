@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { ProfissionaisService } from '../services/profissionais.service';
 import { catchError, map, of, switchMap } from 'rxjs';
 import {
+  enterProfissionaisPage,
   loadProfissionais,
   loadProfissionaisFailure,
   loadProfissionaisSuccess,
@@ -14,11 +15,19 @@ import {
   updateProfissionalSuccess,
 } from './profissionais.actions';
 import { showSnackbar } from '../../../../core/ui/store/ui.actions';
+import { loadUnidades } from '../../unidades/store/unidades.actions';
 
 @Injectable()
 export class ProfissionaisEffects {
   private actions$ = inject(Actions);
   private service = inject(ProfissionaisService);
+
+  enterPage$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(enterProfissionaisPage),
+      switchMap(() => [loadProfissionais(), loadUnidades()]),
+    );
+  });
 
   loadProfissionais$ = createEffect(() => {
     return this.actions$.pipe(
