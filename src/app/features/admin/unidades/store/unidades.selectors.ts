@@ -1,7 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UnidadesState } from './unidades.state';
 import { Unidade } from '../models/Unidade.model';
-import { UnidadeOption } from '../../profissionais/pages/list/profissionais';
 
 export const selectUnidadesState = createFeatureSelector<UnidadesState>('unidades');
 

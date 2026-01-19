@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { ProfissionaisState } from './profissionais.state';
-import { selectUnidadesEntities } from '../../unidades/store/unidades.selectors';
+import { selectUnidades, selectUnidadesEntities } from '../../unidades/store/unidades.selectors';
 import { ProfissionalComUnidade } from '../models/ProfisisonalComUnidade.model';
 
 export const selectProfissionaisState = createFeatureSelector<ProfissionaisState>('profissionais');
@@ -69,4 +69,10 @@ export const selectProfissionalComUnidade = createSelector(
       unidadeNome: unidades[profissional.unidadeId]?.nome ?? '—',
     };
   },
+);
+export const selectUnidadesForOptions = createSelector(selectUnidades, (unidades) =>
+  unidades.map((u) => ({
+    id: u.id,
+    nome: u.nome,
+  })),
 );

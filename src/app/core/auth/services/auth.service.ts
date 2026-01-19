@@ -107,7 +107,7 @@ export class AuthService {
       {
         id: 1,
         userId: 1,
-        nome: 'Dr. João Silva',
+        nome: 'João Silva',
         crm: '123456',
         UFcrm: 'SP',
         celular: '11999999999',
@@ -118,7 +118,7 @@ export class AuthService {
       {
         id: 2,
         userId: 2,
-        nome: 'Dra. Maria Oliveira',
+        nome: 'Maria Oliveira',
         crm: '654321',
         UFcrm: 'RJ',
         celular: '21988887777',
@@ -129,7 +129,7 @@ export class AuthService {
       {
         id: 3,
         userId: 3,
-        nome: 'Dr. Carlos Santos',
+        nome: 'Carlos Santos',
         crm: '987654',
         UFcrm: 'MG',
         celular: '31977776666',

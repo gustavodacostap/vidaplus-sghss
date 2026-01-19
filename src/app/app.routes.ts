@@ -60,6 +60,23 @@ export const routes: Routes = [
                     (m) => m.Profissionais,
                   ),
               }),
+              route({
+                path: 'edit/:id',
+                loadComponent: () =>
+                  import('./features/admin/profissionais/pages/edit/profissional-edit/profissional-edit').then(
+                    (m) => m.ProfissionalEdit,
+                  ),
+                data: {
+                  topbar: {
+                    dynamicMode: true,
+                    pageTitle: 'Editar profissional',
+                    returnLink: 'admin/profissionais',
+                  },
+                  layout: {
+                    contentPadding: 'onlyY',
+                  },
+                },
+              }),
             ],
           }),
         ],

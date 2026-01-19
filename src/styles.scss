@@ -42,6 +42,10 @@ body {
   @include my-theme.high-contrast-overrides(light);
 }
 
+.mat-mdc-card-content {
+  display: flex !important;
+}
+
 :root {
   @include mat.list-overrides(
     (

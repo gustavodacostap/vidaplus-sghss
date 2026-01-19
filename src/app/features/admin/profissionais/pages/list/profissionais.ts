@@ -23,13 +23,9 @@ import {
 import { enterProfissionaisPage } from '../../store/profissionais.actions';
 import { selectNomeUnidades } from '../../../unidades/store/unidades.selectors';
 import { ViewProfissionalDialog } from '../../dialogs/view-profissional-dialog/view-profissional-dialog';
+import { UnidadeOption } from '../edit/profissional-edit/profissional-edit';
 
 type ProfissionalColumn = 'nome' | 'crm' | 'especialidade' | 'unidadeNome';
-
-export interface UnidadeOption {
-  id: number;
-  nome: string;
-}
 
 @Component({
   selector: 'app-profissionais',

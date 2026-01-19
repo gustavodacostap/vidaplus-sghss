@@ -10,7 +10,6 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatStepperModule, StepperOrientation } from '@angular/material/stepper';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { map, Observable } from 'rxjs';
@@ -37,7 +36,6 @@ import { CelularPipe } from '../../../../../shared/pipes/celular.pipe';
     MatStepperModule,
     MatInputModule,
     MatSelectModule,
-    MatCheckboxModule,
     CommonModule,
     NgxMaskDirective,
     USDateToBRPipe,

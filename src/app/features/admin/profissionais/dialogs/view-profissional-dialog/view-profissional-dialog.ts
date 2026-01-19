@@ -68,7 +68,7 @@ export class ViewProfissionalDialog implements OnInit {
   }
 
   navigateToEdit() {
-    this.router.navigate([`admin/profissional/edit/${this.data.profissionalId}`]);
+    this.router.navigate([`admin/profissionais/edit/${this.data.profissionalId}`]);
     this.close();
   }
 }

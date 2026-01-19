@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { ProfissionaisService } from '../services/profissionais.service';
 import { catchError, map, of, switchMap } from 'rxjs';
 import {
+  enterProfissionaisEditPage,
   enterProfissionaisPage,
   loadProfissionais,
   loadProfissionaisFailure,
@@ -91,6 +92,13 @@ export class ProfissionaisEffects {
           ),
         ),
       ),
+    );
+  });
+
+  enterEditPage$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(enterProfissionaisEditPage),
+      switchMap(({ id }) => [loadProfissionalById({ id }), loadUnidades()]),
     );
   });
 }

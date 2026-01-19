@@ -26,6 +26,11 @@ export const loadProfissionalByIdSuccess = createAction(
 
 export const loadProfissionalByIdFailure = createAction('[Profissional Detail] Load Failure');
 
+export const enterProfissionaisEditPage = createAction(
+  '[Profissionais Edit Page] Enter',
+  props<{ id: number }>(),
+);
+
 export const updateProfissional = createAction(
   '[Profissional Edit] Update Profissional',
   props<{ id: number; dto: UpdateProfissionalDTO }>(),
